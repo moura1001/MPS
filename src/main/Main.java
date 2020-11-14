@@ -1,4 +1,6 @@
-package view;
+package main;
+
+import view.TelaInicial;
 
 public class Main{
 
