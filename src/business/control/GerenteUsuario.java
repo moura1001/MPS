@@ -4,7 +4,7 @@ import java.util.TreeMap;
 import java.util.Map;
 import business.model.Usuario;
 
-public class GerenteUsuario{
+public class GerenteUsuario implements IGerente{
 
     private TreeMap<String, Usuario> usuarios = new TreeMap<String, Usuario>();
 
@@ -21,7 +21,7 @@ public class GerenteUsuario{
     }
 
     public void listarTodos(){
-        System.out.println("\nUsuários:");
+        System.out.println("\nUsuï¿½rios:");
         for(Map.Entry usuario : usuarios.entrySet())
             System.out.println(usuario.getValue());
         System.out.println();    
