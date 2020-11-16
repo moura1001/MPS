@@ -22,7 +22,7 @@ public class Usuario implements Comparable<Usuario>{
     }
 
     public String toString(){
-        return "Usu·rio: " + this.login;
+        return "Usu√°rio: " + this.login;
     }
 
 }

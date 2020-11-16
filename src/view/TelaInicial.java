@@ -2,19 +2,26 @@ package view;
 
 import java.util.Scanner;
 import business.control.GerenteUsuario;
+import util.AdicaoUsuarioException;
+import util.LoginUsuarioException;
 
 public class TelaInicial{
 
     GerenteUsuario gerente = new GerenteUsuario();
 
     public String menu(){
-        System.out.println("1: Adicionar usu·rio");
-        System.out.println("2: Excluir usu·rio");
+        System.out.println("\n1: Adicionar usu√°rio");
+        System.out.println("2: Excluir usu√°rio");
         System.out.println("3: Encerrar programa");
 
         Scanner scanner = new Scanner(System.in);
 		String input = scanner.nextLine();
         String output = null;
+
+        if(input == null || !input.matches("^1|^2|^3")){
+            System.out.println("\nOp√ß√£o inv√°lida. Tente novamente\n");
+            return "null";
+        }
 
         switch(input){ 
             
@@ -22,8 +29,7 @@ public class TelaInicial{
                 System.out.println("\nDigite login e senha:");
                 input = scanner.nextLine(); 
                 output = input;
-                String[] usuario = input.split(" ");
-                adicionarUsuario(usuario);
+                adicionarUsuario(input);
                 break; 
             
             case "2":
@@ -35,28 +41,30 @@ public class TelaInicial{
             
             case "3": 
                 break; 
-            
-            default: 
-                input = null; 
         }
 
-        if(input == null){
-            System.out.println("\nOpÁ„o inv·lida. Tente novamente\n");
-            return "null";
-        }
         //System.out.println();
         return output; 
 
     }
 
-	private void adicionarUsuario(String[] args){
-        gerente.adicionar(args[0], args[1]);
-		gerente.listarTodos();
+	private void adicionarUsuario(String args){
+        try{
+            gerente.adicionar(args);
+		    gerente.listarTodos();        
+        } catch(AdicaoUsuarioException e){
+            System.out.println(e.getMessage());
+        }
+
     }
 
-    private void excluirUsuario(String arg){
-        gerente.remover(arg);
-        gerente.listarTodos();
+    private void excluirUsuario(String args){
+        try{
+            gerente.remover(args);
+            gerente.listarTodos();
+        } catch(LoginUsuarioException e){
+            System.out.println(e.getMessage());
+        }
     }
 
 }

@@ -1,6 +1,6 @@
 package util;
 
-public class LoginUsuarioException extends Exception{
+public class LoginUsuarioException extends AdicaoUsuarioException{
     
     public LoginUsuarioException(){
         super("mensagem default");

@@ -1,8 +1,8 @@
 ## Compilar
 
-javac -d bin src/view/*.java src/util/*.java src/infra/*.java src/business/control/*.java src/business/model/*.java
+javac -d bin src/view/*.java src/util/*.java src/infra/*.java src/business/control/*.java src/business/model/*.java src/main/*.java
 
 
 ## Executar
 
-java -classpath bin view.Main
+java -classpath bin main.Main
