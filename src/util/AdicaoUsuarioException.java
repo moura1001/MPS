@@ -6,7 +6,7 @@ public class AdicaoUsuarioException extends Exception{
         super("Login e senha não podem ser nulos nem podem conter espaços em branco");
     }
     
-    public AdicaoUsuarioException(String menssagem){
-        super(menssagem);
+    public AdicaoUsuarioException(String mensagem){
+        super(mensagem);
     }
 }

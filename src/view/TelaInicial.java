@@ -63,7 +63,7 @@ public class TelaInicial{
         try{
             gerente.remover(args);
             gerente.listarTodos();
-        } catch(LoginUsuarioException e){
+        } catch(Exception e){
             System.out.println(e.getMessage());
         }
     }

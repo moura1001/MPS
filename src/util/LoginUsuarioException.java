@@ -6,7 +6,7 @@ public class LoginUsuarioException extends AdicaoUsuarioException{
         super("mensagem default");
     }
     
-    public LoginUsuarioException(String menssagem){
-        super(menssagem);
+    public LoginUsuarioException(String mensagem){
+        super(mensagem);
     }
 }

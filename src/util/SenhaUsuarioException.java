@@ -6,7 +6,7 @@ public class SenhaUsuarioException extends AdicaoUsuarioException{
         super("mensagem default");
     }
     
-    public SenhaUsuarioException(String menssagem){
-        super(menssagem);
+    public SenhaUsuarioException(String mensagem){
+        super(mensagem);
     }
 }
