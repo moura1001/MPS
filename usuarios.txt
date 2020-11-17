@@ -1,5 +1,4 @@
 abc	abcdefgh12
-baa	namn1234567
 bab	12345678
 cab	bnm12345
 dfa	123456789

@@ -12,14 +12,15 @@ import infra.GerentePersistencia;
 import infra.GerentePersistenciaFile;
 
 public class GerenteUsuario implements IGerente{
+    private TreeMap<String, Usuario> usuarios;
     private GerentePersistencia repositorioUsuario;
 
     public GerenteUsuario() throws ErroInternoException{
         try{
             this.repositorioUsuario = new GerentePersistenciaFile();
-            this.repositorioUsuario.carregarUsuarios();
+            this.usuarios = this.repositorioUsuario.carregarUsuarios();
         } catch(PersistenciaException e){
-            throw new ErroInternoException();
+            throw new ErroInternoException("Erro interno durante a inicialização. Por favor, entre em contato com o administrador");
         }        
     }
 
@@ -28,7 +29,7 @@ public class GerenteUsuario implements IGerente{
         if(usuario == null)
             throw new AdicaoUsuarioException();
 
-        String[] info = usuario.split(" ");
+        String[] info = usuario.split("[\\t ]");
 
         if(info.length != 2)
             throw new AdicaoUsuarioException();
@@ -45,7 +46,7 @@ public class GerenteUsuario implements IGerente{
         if(login.matches(".*\\d.*"))
             throw new LoginUsuarioException("Login não pode conter números");
 
-        if(this.repositorioUsuario.usuarioExistente(login))
+        if(this.usuarios.containsKey(login))
             throw new LoginUsuarioException("Login já existe");    
 
         if(senha.length() < 8 || senha.length() > 12)
@@ -54,49 +55,51 @@ public class GerenteUsuario implements IGerente{
         if(!senha.matches("(.*\\d.*){2,}"))
             throw new SenhaUsuarioException("Senha deve conter pelo menos 2 números");
         
+        Usuario u = new Usuario(login, senha);
+        this.usuarios.put(u.getLogin(), u);
+        
         try {
-            this.repositorioUsuario.criarUsuario(new Usuario(login, senha));
+            this.repositorioUsuario.salvarUsuarios(this.usuarios);
+            System.out.println(u + " foi adicionado");
         } catch(PersistenciaException e) {
-            throw new ErroInternoException();
+            throw new ErroInternoException("Erro interno ao tentar adicionar usuário. Por favor, entre em contato com o administrador");
         }
     }
     
     public void remover(String login) throws LoginUsuarioException, ErroInternoException{
-        if(!this.repositorioUsuario.usuarioExistente(login))
+        if(!this.usuarios.containsKey(login))
             throw new LoginUsuarioException("Login não existe");
         
         try {
-            Usuario usuario = this.repositorioUsuario.removerUsuario(login);
+            Usuario usuario = this.usuarios.remove(login);
+            this.repositorioUsuario.salvarUsuarios(this.usuarios);
             System.out.println(usuario + " foi removido");
         } catch (PersistenciaException exception) {
-            throw new ErroInternoException();
+            throw new ErroInternoException("Erro interno ao tentar remover usuário. Por favor, entre em contato com o administrador");
         }
     }
 
     public void listar(String login) throws LoginUsuarioException{
-        if(!this.repositorioUsuario.usuarioExistente(login))
+        if(!this.usuarios.containsKey(login))
             throw new LoginUsuarioException("Login não existe");
 
-        Usuario usuario = this.repositorioUsuario.retornarUsuario(login);
+        Usuario usuario = this.usuarios.get(login);
         System.out.println(usuario);
         
     }
 
     public void listarTodos(){
         System.out.println("\nUsuários:");
-        TreeMap<String, Usuario> usuarios;
-        usuarios = this.repositorioUsuario.retornarUsuarios();
-        for(Map.Entry usuario : usuarios.entrySet())
+        for(Map.Entry usuario : this.usuarios.entrySet())
             System.out.println(usuario.getValue());
         System.out.println();    
     }
 
-    public void encerrar() throws ErroInternoException{
-        
+    public void encerrar() throws ErroInternoException{        
         try {
-            this.repositorioUsuario.salvarUsuarios();
-        } catch (PersistenciaException exception) {
-            throw new ErroInternoException();
+            this.repositorioUsuario.salvarUsuarios(this.usuarios);
+        } catch (PersistenciaException e) {
+            throw new ErroInternoException("Erro interno durante o encerramento com possíveis perdas de dados. Por favor, entre em contato com o administrador");
         }
     }
 

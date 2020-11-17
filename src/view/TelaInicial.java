@@ -69,7 +69,7 @@ public class TelaInicial{
 	private void adicionarUsuario(String args){
         try{
             gerente.adicionar(args);
-		    gerente.listarTodos();        
+		    //gerente.listarTodos();        
         
         } catch(AdicaoUsuarioException e){
             System.out.println(e.getMessage());
@@ -82,7 +82,7 @@ public class TelaInicial{
     private void excluirUsuario(String args){
         try{
             gerente.remover(args);
-            gerente.listarTodos();
+            //gerente.listarTodos();
         
         } catch(LoginUsuarioException e){
             System.out.println(e.getMessage());
