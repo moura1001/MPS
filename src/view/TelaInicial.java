@@ -3,23 +3,34 @@ package view;
 import java.util.Scanner;
 import util.AdicaoUsuarioException;
 import util.LoginUsuarioException;
+import util.ErroInternoException;
 import business.control.GerenteUsuario;
 import infra.GerentePersistenciaFile;
 
 public class TelaInicial{
 
-    GerenteUsuario gerente = new GerenteUsuario(new GerentePersistenciaFile());
+    GerenteUsuario gerente;
+    
+    public TelaInicial(){
+        try{
+            gerente = new GerenteUsuario();
+        } catch(ErroInternoException e){
+            System.out.println(e.getMessage());
+        }        
+    }
 
     public String menu(){
-        System.out.println("\n1: Adicionar usuário");
+        System.out.println("\nEscolha uma das opções abaixo:");
+        System.out.println("1: Adicionar usuário");
         System.out.println("2: Excluir usuário");
-        System.out.println("3: Encerrar programa");
+        System.out.println("3: Listar todos os usuários");
+        System.out.println("4: Encerrar programa");
 
         Scanner scanner = new Scanner(System.in);
 		String input = scanner.nextLine();
         String output = null;
 
-        if(input == null || !input.matches("^1|^2|^3")){
+        if(input == null || !input.matches("^1|^2|^3|^4")){
             System.out.println("\nOpção inválida. Tente novamente\n");
             return "null";
         }
@@ -40,7 +51,13 @@ public class TelaInicial{
                 excluirUsuario(input); 
                 break;
             
-            case "3": 
+            case "3":
+                output = input;
+                listarUsuarios(); 
+                break;
+            
+            case "4":
+                encerrarPrograma(); 
                 break; 
         }
 
@@ -53,17 +70,36 @@ public class TelaInicial{
         try{
             gerente.adicionar(args);
 		    gerente.listarTodos();        
+        
         } catch(AdicaoUsuarioException e){
             System.out.println(e.getMessage());
+        
+        } catch(ErroInternoException e){
+            System.out.println(e.getMessage());
         }
-
     }
 
     private void excluirUsuario(String args){
         try{
             gerente.remover(args);
             gerente.listarTodos();
-        } catch(Exception e){
+        
+        } catch(LoginUsuarioException e){
+            System.out.println(e.getMessage());
+        
+        } catch(ErroInternoException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void listarUsuarios(){
+        gerente.listarTodos();
+    }
+
+    private void encerrarPrograma(){
+        try{
+            gerente.encerrar();
+        } catch(ErroInternoException e){
             System.out.println(e.getMessage());
         }
     }

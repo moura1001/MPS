@@ -7,41 +7,44 @@ import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.BufferedWriter;
 import java.io.BufferedReader;
+import java.io.IOException;
 import util.PersistenciaException;
 
 public class GerentePersistenciaFile implements GerentePersistencia{
     private String filename = "usuarios.txt";
-    private TreeMap<String, Usuario> usuarios; 
+    private TreeMap<String, Usuario> usuarios;
 
-    public TreeMap<String, Usuario> carregar(){return null;}
-    public void salvar(TreeMap<String, Usuario> usuarios){}
-
-    public GerentePersistenciaFile() {
+    public void carregarUsuarios() throws PersistenciaException{
         this.usuarios = new TreeMap<String, Usuario>();
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = br.readLine()) != null) {
-               // System.out.println(line.split("rio: ")[1]);
-               String login = line.split("rio: ")[1];
-               this.usuarios.put(login, new Usuario(login, login));
+               String[] usuario = line.split("\t");
+               String login = usuario[0];
+               String senha = usuario[1].split("\n")[0];
+               this.usuarios.put(login, new Usuario(login, senha));
             }
-        } catch (Exception exception) {
-            // TODO REVIEW THIS EXCEPTION
+        } catch (IOException exception) {
+            throw new PersistenciaException("Erro ao carregar arquivo.");
         }
     }
 
-    public void salvar() throws PersistenciaException {
+    public void salvarUsuarios() throws PersistenciaException {
         try {
             FileWriter fstream = new FileWriter(filename);
             BufferedWriter out = new BufferedWriter(fstream);
     
-            for (Map.Entry<String, Usuario> entry : this.usuarios.entrySet()) {
-                out.write(entry.getKey() + "\t" + entry.getValue() + "\n");
+            for(Map.Entry<String, Usuario> entry : this.usuarios.entrySet()){
+                Usuario usuario = entry.getValue();
+                String login = usuario.getLogin();
+                String senha = usuario.getSenha();
+                out.write(login + "\t" + senha + "\n");
+                //out.write(entry.getKey() + "\t" + entry.getValue() + "\n");
                 out.flush();
             }
     
             out.close();  
-        } catch(Exception exception) {
+        } catch(IOException e) {
             throw new PersistenciaException("Erro ao salvar arquivo.");
         }
     }
@@ -49,16 +52,16 @@ public class GerentePersistenciaFile implements GerentePersistencia{
     public void criarUsuario(Usuario usuario) throws PersistenciaException{
         usuarios.put(usuario.getLogin(), usuario);
 
-        this.listarUsuarios();
+        //this.listarUsuarios();
         try {
-            salvar();
+            salvarUsuarios();
         } catch(PersistenciaException exception) {
             throw exception;
         }
     }
 
     public void listarUsuarios() {
-        for (Map.Entry<String, Usuario> entry : usuarios.entrySet()) {
+        for(Map.Entry<String, Usuario> entry : usuarios.entrySet()) {
             System.out.println("Chave: " + entry.getKey() + ". Login: " + entry.getValue());
        }
     }
@@ -67,17 +70,21 @@ public class GerentePersistenciaFile implements GerentePersistencia{
         return usuarios.containsKey(login);
     }
 
-    public void removeUsuario(String login) throws PersistenciaException {
-        this.usuarios.remove(login);
+    public Usuario removerUsuario(String login) throws PersistenciaException {
+        Usuario usuario = this.usuarios.remove(login);
         try {
-            salvar();
+            salvarUsuarios();
         } catch(PersistenciaException exception) {
             throw exception;
         }
+        return usuario;
     }
 
     public TreeMap<String, Usuario> retornarUsuarios() {
         return this.usuarios;
+    }
 
+    public Usuario retornarUsuario(String login){
+        return this.usuarios.get(login);
     }
 }

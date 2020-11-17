@@ -6,20 +6,24 @@ import business.model.Usuario;
 import util.LoginUsuarioException;
 import util.SenhaUsuarioException;
 import util.AdicaoUsuarioException;
+import util.PersistenciaException;
 import util.ErroInternoException;
 import infra.GerentePersistencia;
+import infra.GerentePersistenciaFile;
 
 public class GerenteUsuario implements IGerente{
-    // private TreeMap<String, Usuario> usuarios;
     private GerentePersistencia repositorioUsuario;
 
-    public GerenteUsuario(GerentePersistencia repositorioUsuario) {
-        this.repositorioUsuario = repositorioUsuario;
+    public GerenteUsuario() throws ErroInternoException{
+        try{
+            this.repositorioUsuario = new GerentePersistenciaFile();
+            this.repositorioUsuario.carregarUsuarios();
+        } catch(PersistenciaException e){
+            throw new ErroInternoException();
+        }        
     }
 
-    private TreeMap<String, Usuario> usuarios = new TreeMap<String, Usuario>();
-
-	public void adicionar(String usuario) throws AdicaoUsuarioException{
+	public void adicionar(String usuario) throws AdicaoUsuarioException, ErroInternoException{
 
         if(usuario == null)
             throw new AdicaoUsuarioException();
@@ -52,18 +56,19 @@ public class GerenteUsuario implements IGerente{
         
         try {
             this.repositorioUsuario.criarUsuario(new Usuario(login, senha));
-        } catch (Exception exception) {
+        } catch(PersistenciaException e) {
             throw new ErroInternoException();
         }
     }
     
-    public void remover(String login) throws Exception {
+    public void remover(String login) throws LoginUsuarioException, ErroInternoException{
         if(!this.repositorioUsuario.usuarioExistente(login))
-        throw new LoginUsuarioException("Login não existe");
+            throw new LoginUsuarioException("Login não existe");
         
         try {
-            this.repositorioUsuario.removeUsuario(login);
-        } catch (Exception exception) {
+            Usuario usuario = this.repositorioUsuario.removerUsuario(login);
+            System.out.println(usuario + " foi removido");
+        } catch (PersistenciaException exception) {
             throw new ErroInternoException();
         }
     }
@@ -72,7 +77,8 @@ public class GerenteUsuario implements IGerente{
         if(!this.repositorioUsuario.usuarioExistente(login))
             throw new LoginUsuarioException("Login não existe");
 
-        System.out.println(usuarios.get(login));
+        Usuario usuario = this.repositorioUsuario.retornarUsuario(login);
+        System.out.println(usuario);
         
     }
 
@@ -83,6 +89,15 @@ public class GerenteUsuario implements IGerente{
         for(Map.Entry usuario : usuarios.entrySet())
             System.out.println(usuario.getValue());
         System.out.println();    
+    }
+
+    public void encerrar() throws ErroInternoException{
+        
+        try {
+            this.repositorioUsuario.salvarUsuarios();
+        } catch (PersistenciaException exception) {
+            throw new ErroInternoException();
+        }
     }
 
 }

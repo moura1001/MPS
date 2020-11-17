@@ -1,4 +1,4 @@
-package com.example.main;
+package main;
 
 import view.TelaInicial;
 

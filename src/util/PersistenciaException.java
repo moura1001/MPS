@@ -3,7 +3,7 @@ package util;
 public class PersistenciaException extends Exception{
     
     public PersistenciaException(){
-        super("mensagem default");
+        super("Erro de persistência");
     }
     
     public PersistenciaException(String mensagem){

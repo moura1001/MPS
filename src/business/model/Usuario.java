@@ -25,8 +25,12 @@ public class Usuario implements Comparable<Usuario>{
         return "Usuário: " + this.login;
     }
 
-    public String getLogin() {
+    public String getLogin(){
         return this.login;
+    }
+
+    public String getSenha(){
+        return this.senha;
     }
 
 }

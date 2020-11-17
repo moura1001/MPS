@@ -3,7 +3,7 @@ package util;
 public class SenhaUsuarioException extends AdicaoUsuarioException{
     
     public SenhaUsuarioException(){
-        super("mensagem default");
+        super("Erro de senha");
     }
     
     public SenhaUsuarioException(String mensagem){
