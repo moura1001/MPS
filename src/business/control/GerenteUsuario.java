@@ -6,8 +6,15 @@ import business.model.Usuario;
 import util.LoginUsuarioException;
 import util.SenhaUsuarioException;
 import util.AdicaoUsuarioException;
+import infra.GerentePersistencia;
 
 public class GerenteUsuario implements IGerente{
+    // private TreeMap<String, Usuario> usuarios;
+    private GerentePersistencia repositorioUsuario;
+
+    public GerenteUsuario(GerentePersistencia repositorioUsuario) {
+        this.repositorioUsuario = repositorioUsuario;
+    }
 
     private TreeMap<String, Usuario> usuarios = new TreeMap<String, Usuario>();
 
@@ -33,7 +40,7 @@ public class GerenteUsuario implements IGerente{
         if(login.matches(".*\\d.*"))
             throw new LoginUsuarioException("Login não pode conter números");
 
-        if(usuarios.containsKey(login))
+        if(this.repositorioUsuario.usuarioExistente(login))
             throw new LoginUsuarioException("Login já existe");    
 
         if(senha.length() < 8 || senha.length() > 12)
@@ -42,18 +49,20 @@ public class GerenteUsuario implements IGerente{
         if(!senha.matches("(.*\\d.*){2,}"))
             throw new SenhaUsuarioException("Senha deve conter pelo menos 2 números");
         
-        usuarios.put(login, new Usuario(login,senha));
+        this.repositorioUsuario.criarUsuario(new Usuario(login, senha));
+        // usuarios.put(login, new Usuario(login,senha));
     }
-
+    
     public void remover(String login) throws LoginUsuarioException{
-        if(!usuarios.containsKey(login))
-            throw new LoginUsuarioException("Login não existe");
-
-        usuarios.remove(login);
+        if(!this.repositorioUsuario.usuarioExistente(login))
+        throw new LoginUsuarioException("Login não existe");
+        
+        // usuarios.remove(login);
+        this.repositorioUsuario.removeUsuario(login);
     }
 
     public void listar(String login) throws LoginUsuarioException{
-        if(!usuarios.containsKey(login))
+        if(!this.repositorioUsuario.usuarioExistente(login))
             throw new LoginUsuarioException("Login não existe");
 
         System.out.println(usuarios.get(login));
@@ -61,6 +70,8 @@ public class GerenteUsuario implements IGerente{
 
     public void listarTodos(){
         System.out.println("\nUsuários:");
+        TreeMap<String, Usuario> usuarios;
+        usuarios = this.repositorioUsuario.retornarUsuarios();
         for(Map.Entry usuario : usuarios.entrySet())
             System.out.println(usuario.getValue());
         System.out.println();    

@@ -1,13 +1,14 @@
 package view;
 
 import java.util.Scanner;
-import business.control.GerenteUsuario;
 import util.AdicaoUsuarioException;
 import util.LoginUsuarioException;
+import business.control.GerenteUsuario;
+import infra.GerentePersistenciaFile;
 
 public class TelaInicial{
 
-    GerenteUsuario gerente = new GerenteUsuario();
+    GerenteUsuario gerente = new GerenteUsuario(new GerentePersistenciaFile());
 
     public String menu(){
         System.out.println("\n1: Adicionar usuário");
