@@ -6,7 +6,7 @@ public class PersistenciaException extends Exception{
         super("mensagem default");
     }
     
-    public PersistenciaException(String menssagem){
-        super(menssagem);
+    public PersistenciaException(String mensagem){
+        super(mensagem);
     }
 }

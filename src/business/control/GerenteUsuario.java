@@ -6,6 +6,7 @@ import business.model.Usuario;
 import util.LoginUsuarioException;
 import util.SenhaUsuarioException;
 import util.AdicaoUsuarioException;
+import util.ErroInternoException;
 import infra.GerentePersistencia;
 
 public class GerenteUsuario implements IGerente{
@@ -49,16 +50,22 @@ public class GerenteUsuario implements IGerente{
         if(!senha.matches("(.*\\d.*){2,}"))
             throw new SenhaUsuarioException("Senha deve conter pelo menos 2 números");
         
-        this.repositorioUsuario.criarUsuario(new Usuario(login, senha));
-        // usuarios.put(login, new Usuario(login,senha));
+        try {
+            this.repositorioUsuario.criarUsuario(new Usuario(login, senha));
+        } catch (Exception exception) {
+            throw new ErroInternoException();
+        }
     }
     
-    public void remover(String login) throws LoginUsuarioException{
+    public void remover(String login) throws Exception {
         if(!this.repositorioUsuario.usuarioExistente(login))
         throw new LoginUsuarioException("Login não existe");
         
-        // usuarios.remove(login);
-        this.repositorioUsuario.removeUsuario(login);
+        try {
+            this.repositorioUsuario.removeUsuario(login);
+        } catch (Exception exception) {
+            throw new ErroInternoException();
+        }
     }
 
     public void listar(String login) throws LoginUsuarioException{
@@ -66,6 +73,7 @@ public class GerenteUsuario implements IGerente{
             throw new LoginUsuarioException("Login não existe");
 
         System.out.println(usuarios.get(login));
+        
     }
 
     public void listarTodos(){
