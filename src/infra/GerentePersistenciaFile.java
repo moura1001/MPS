@@ -1,6 +1,6 @@
 package infra;
 
-import java.util.TreeMap;
+import java.util.TreeSet;
 import business.model.Usuario;
 import business.model.Data;
 import java.util.*;
@@ -14,8 +14,8 @@ import util.PersistenciaException;
 public class GerentePersistenciaFile implements GerentePersistencia{
     private String filename = "usuarios.txt";
 
-    public TreeMap<String, Usuario> carregarUsuarios() throws PersistenciaException{
-        TreeMap<String, Usuario> usuarios = new TreeMap<String, Usuario>();
+    public TreeSet<Usuario> carregarUsuarios() throws PersistenciaException{
+        TreeSet<Usuario> usuarios = new TreeSet<Usuario>();
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -28,7 +28,7 @@ public class GerentePersistenciaFile implements GerentePersistencia{
                 int ano = Integer.parseInt(data.split("/")[2]);
                 //Data d = new Data(dia,mes,ano);
                 Usuario u = new Usuario(login, senha, new Data(dia,mes,ano));
-                usuarios.put(login, u);
+                usuarios.add(u);
             }
         } catch (IOException exception) {
             throw new PersistenciaException("Erro ao carregar arquivo.");
@@ -37,13 +37,12 @@ public class GerentePersistenciaFile implements GerentePersistencia{
         return usuarios;
     }
 
-    public void salvarUsuarios(TreeMap<String, Usuario> usuarios) throws PersistenciaException {
+    public void salvarUsuarios(TreeSet<Usuario> usuarios) throws PersistenciaException {
         try {
             FileWriter fstream = new FileWriter(filename);
             BufferedWriter out = new BufferedWriter(fstream);
     
-            for(Map.Entry<String, Usuario> entry : usuarios.entrySet()){
-                Usuario usuario = entry.getValue();
+            for(Usuario usuario : usuarios){
                 String login = usuario.getLogin();
                 String senha = usuario.getSenha();
                 String data = usuario.getData().toString();

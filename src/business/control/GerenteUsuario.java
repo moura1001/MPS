@@ -1,7 +1,5 @@
 package business.control;
 
-import java.util.TreeMap;
-import java.util.Map;
 import java.util.TreeSet;
 import business.model.Usuario;
 import business.model.Data;
@@ -15,7 +13,7 @@ import infra.GerentePersistencia;
 import infra.GerentePersistenciaFile;
 
 public class GerenteUsuario implements IGerente{
-    private TreeMap<String, Usuario> usuarios;
+    private TreeSet<Usuario> usuarios;
     private GerentePersistencia repositorioUsuario;
 
     public GerenteUsuario() throws ErroInternoException{
@@ -50,7 +48,7 @@ public class GerenteUsuario implements IGerente{
         if(login.matches(".*\\d.*"))
             throw new LoginUsuarioException("Login não pode conter números");
 
-        if(this.usuarios.containsKey(login))
+        if(existeUsuario(login) != null)
             throw new LoginUsuarioException("Login já existe");    
 
         if(senha.length() < 8 || senha.length() > 12)
@@ -67,7 +65,7 @@ public class GerenteUsuario implements IGerente{
         //int ano = Integer.parseInt(data.split("/")[2]);
         //Data d = new Data(dia,mes,ano);
         Usuario u = new Usuario(login, senha);
-        this.usuarios.put(u.getLogin(), u);
+        this.usuarios.add(u);
         
         try {
             this.repositorioUsuario.salvarUsuarios(this.usuarios);
@@ -78,11 +76,14 @@ public class GerenteUsuario implements IGerente{
     }
     
     public void remover(String login) throws LoginUsuarioException, ErroInternoException{
-        if(!this.usuarios.containsKey(login))
+        
+        Usuario usuario = existeUsuario(login);
+        
+        if(usuario == null)
             throw new LoginUsuarioException("Login não existe");
         
         try {
-            Usuario usuario = this.usuarios.remove(login);
+            this.usuarios.remove(usuario);
             this.repositorioUsuario.salvarUsuarios(this.usuarios);
             System.out.println(usuario + " foi removido");
         } catch (PersistenciaException exception) {
@@ -91,26 +92,28 @@ public class GerenteUsuario implements IGerente{
     }
 
     public void listar(String login) throws LoginUsuarioException{
-        if(!this.usuarios.containsKey(login))
+        
+        Usuario usuario = existeUsuario(login);
+        
+        if(usuario == null)
             throw new LoginUsuarioException("Login não existe");
 
-        Usuario usuario = this.usuarios.get(login);
         System.out.println(usuario);
         
     }
 
     public void listarTodosPorOrdemAlfabetica(){
         System.out.println("\nUsuários:");
-        for(Map.Entry usuario : this.usuarios.entrySet())
-            System.out.println(usuario.getValue());
+        for(Usuario usuario : this.usuarios)
+            System.out.println(usuario);
         System.out.println();    
     }
 
     public void listarTodosPorOrdemDataDeNascimento(){
         TreeSet<Usuario> usuarios = new TreeSet<Usuario>(new ComparadorData());
         
-        for(Map.Entry usuario : this.usuarios.entrySet())
-            usuarios.add((Usuario)usuario.getValue());
+        for(Usuario usuario : this.usuarios)
+            usuarios.add(usuario);
         
         System.out.println("\nUsuários:");
         for(Usuario usuario : usuarios)
@@ -124,6 +127,13 @@ public class GerenteUsuario implements IGerente{
         } catch (PersistenciaException e) {
             throw new ErroInternoException("Erro interno durante o encerramento com possíveis perdas de dados. Por favor, entre em contato com o administrador");
         }
+    }
+
+    private Usuario existeUsuario(String login){
+        for(Usuario usuario : usuarios)
+            if(usuario.getLogin().equals(login))
+                return usuario;
+        return null;
     }
 
 }
