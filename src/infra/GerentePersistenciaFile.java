@@ -2,6 +2,7 @@ package infra;
 
 import java.util.TreeMap;
 import business.model.Usuario;
+import business.model.Data;
 import java.util.*;
 import java.io.FileWriter;
 import java.io.FileReader;
@@ -18,10 +19,16 @@ public class GerentePersistenciaFile implements GerentePersistencia{
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = br.readLine()) != null) {
-               String[] usuario = line.split("\t");
-               String login = usuario[0];
-               String senha = usuario[1].split("\n")[0];
-               usuarios.put(login, new Usuario(login, senha));
+                String[] usuario = line.split("\t");
+                String login = usuario[0];
+                String senha = usuario[1];
+                String data = usuario[2].split("\n")[0];
+                int dia = Integer.parseInt(data.split("/")[0]);
+                int mes = Integer.parseInt(data.split("/")[1]);
+                int ano = Integer.parseInt(data.split("/")[2]);
+                //Data d = new Data(dia,mes,ano);
+                Usuario u = new Usuario(login, senha, new Data(dia,mes,ano));
+                usuarios.put(login, u);
             }
         } catch (IOException exception) {
             throw new PersistenciaException("Erro ao carregar arquivo.");
@@ -39,7 +46,8 @@ public class GerentePersistenciaFile implements GerentePersistencia{
                 Usuario usuario = entry.getValue();
                 String login = usuario.getLogin();
                 String senha = usuario.getSenha();
-                out.write(login + "\t" + senha + "\n");
+                String data = usuario.getData().toString();
+                out.write(login + "\t" + senha + "\t" + data + "\n");
                 out.flush();
             }
     

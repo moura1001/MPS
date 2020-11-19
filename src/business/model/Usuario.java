@@ -6,15 +6,18 @@ public class Usuario implements Comparable<Usuario>{
 
     private String login;
     private String senha;
-
-    public Usuario(){
-        login = "default";
-        senha = "12345678";
-    }
+    private Data dataNascimento;
 
     public Usuario(String login, String senha){
         this.login = login;
         this.senha = senha;
+        dataNascimento = new Data();
+    }
+
+    public Usuario(String login, String senha, Data data){
+        this.login = login;
+        this.senha = senha;
+        this.dataNascimento = data;
     }
 
     public int compareTo(Usuario usuario){
@@ -33,4 +36,11 @@ public class Usuario implements Comparable<Usuario>{
         return this.senha;
     }
 
+    public Data getData(){
+        return this.dataNascimento;
+    }
+
+    public void setData(Data data){
+        this.dataNascimento = data;
+    }
 }

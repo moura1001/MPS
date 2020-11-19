@@ -2,9 +2,12 @@ package business.control;
 
 import java.util.TreeMap;
 import java.util.Map;
+import java.util.TreeSet;
 import business.model.Usuario;
+import business.model.Data;
 import util.LoginUsuarioException;
 import util.SenhaUsuarioException;
+import util.DataUsuarioException;
 import util.AdicaoUsuarioException;
 import util.PersistenciaException;
 import util.ErroInternoException;
@@ -36,8 +39,9 @@ public class GerenteUsuario implements IGerente{
         
         String login = info[0];
         String senha = info[1];
+        //String data = info[2];
         
-        if(login.matches("^$") || senha.matches("^$"))
+        if(login.matches("^$") || senha.matches("^$"))// || data.matches("^$"))
             throw new AdicaoUsuarioException();
 
         if(login.length() > 20)
@@ -55,6 +59,13 @@ public class GerenteUsuario implements IGerente{
         if(!senha.matches("(.*\\d.*){2,}"))
             throw new SenhaUsuarioException("Senha deve conter pelo menos 2 números");
         
+        //if(!data.matches("[0-3][0-9]/[0-9]{2}/[1-9]{4}"))
+        //    throw new DataUsuarioException("Data de nascimento deve seguir o formato DD/MM/AAAA");
+        
+        //int dia = Integer.parseInt(data.split("/")[0]);
+        //int mes = Integer.parseInt(data.split("/")[1]);
+        //int ano = Integer.parseInt(data.split("/")[2]);
+        //Data d = new Data(dia,mes,ano);
         Usuario u = new Usuario(login, senha);
         this.usuarios.put(u.getLogin(), u);
         
@@ -88,11 +99,23 @@ public class GerenteUsuario implements IGerente{
         
     }
 
-    public void listarTodos(){
+    public void listarTodosPorOrdemAlfabetica(){
         System.out.println("\nUsuários:");
         for(Map.Entry usuario : this.usuarios.entrySet())
             System.out.println(usuario.getValue());
         System.out.println();    
+    }
+
+    public void listarTodosPorOrdemDataDeNascimento(){
+        TreeSet<Usuario> usuarios = new TreeSet<Usuario>(new ComparadorData());
+        
+        for(Map.Entry usuario : this.usuarios.entrySet())
+            usuarios.add((Usuario)usuario.getValue());
+        
+        System.out.println("\nUsuários:");
+        for(Usuario usuario : usuarios)
+            System.out.println(usuario + "\t" + usuario.getData());
+        System.out.println();
     }
 
     public void encerrar() throws ErroInternoException{        
