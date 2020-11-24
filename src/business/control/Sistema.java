@@ -62,6 +62,10 @@ public class Sistema {
         gerentePedido.adicionar(itens, valor, login);
     }
 
+    public void listarPedidos() {
+        gerentePedido.listarTodos();
+    }
+
     public void encerrarPrograma(){
         try{
             gerente.encerrar();
