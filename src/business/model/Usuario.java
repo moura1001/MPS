@@ -1,5 +1,7 @@
 package business.model;
 
+import business.model.Pedido;
+import java.util.ArrayList;
 import java.lang.Comparable;
 
 public class Usuario implements Comparable<Usuario>{
@@ -8,16 +10,22 @@ public class Usuario implements Comparable<Usuario>{
     private String senha;
     private Data dataNascimento;
 
+
+
+    private ArrayList<Pedido> pedidos;
+
     public Usuario(String login, String senha){
         this.login = login;
         this.senha = senha;
         dataNascimento = new Data();
+        this.pedidos = new ArrayList<Pedido>();
     }
 
-    public Usuario(String login, String senha, Data data){
+    public Usuario(String login, String senha, Data data, ArrayList<Pedido> pedidos){
         this.login = login;
         this.senha = senha;
         this.dataNascimento = data;
+        this.pedidos = pedidos;
     }
 
     public int compareTo(Usuario usuario){
@@ -40,7 +48,15 @@ public class Usuario implements Comparable<Usuario>{
         return this.dataNascimento;
     }
 
+    public ArrayList<Pedido> getPedidos(){
+        return this.pedidos;
+    }
+
     public void setData(Data data){
         this.dataNascimento = data;
+    }
+
+    public void setPedidos(ArrayList<Pedido> pedidos) {
+        this.pedidos = pedidos;
     }
 }

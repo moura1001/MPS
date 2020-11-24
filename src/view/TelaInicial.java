@@ -1,6 +1,10 @@
 package view;
 
+import java.awt.*;
 import java.util.Scanner;
+
+import business.control.GerentePedido;
+import business.control.Sistema;
 import util.AdicaoUsuarioException;
 import util.LoginUsuarioException;
 import util.ErroInternoException;
@@ -9,109 +13,86 @@ import infra.GerentePersistenciaFile;
 
 public class TelaInicial{
 
-    GerenteUsuario gerente;
-    
-    public TelaInicial(){
-        try{
-            gerente = new GerenteUsuario();
-        } catch(ErroInternoException e){
-            System.out.println(e.getMessage());
-        }        
+    Sistema sistema;
+
+    public TelaInicial() {
+        this.sistema = new Sistema();
     }
 
     public String menu(){
-        System.out.println("\nEscolha uma das opções abaixo:");
-        System.out.println("1: Adicionar usuário");
-        System.out.println("2: Excluir usuário");
-        System.out.println("3: Listar todos os usuários por ordem alfabética");
-        System.out.println("4: Listar todos os usuários por ordem data de nascimento");
-        System.out.println("5: Encerrar programa");
+        String[] acoes = {
+                "",
+                "Adicionar usuário",
+                "Excluir usuário",
+                "Listar todos os usuários por ordem alfabética",
+                "Listar todos os usuários por ordem data de nascimento",
+                "Adicionar pedido",
+                "Lista todos pedidos",
+                "Encerrar programa"
+        };
+
+        for (int i = 0; i < acoes.length; i++) {
+            System.out.println(String.valueOf(i) + ": " + acoes[i]);
+        }
+
 
         Scanner scanner = new Scanner(System.in);
 		String input = scanner.nextLine();
         String output = null;
 
-        if(input == null || !input.matches("^1|^2|^3|^4|^5")){
+        if(input == null || !input.matches("^1|^2|^3|^4|^5|^6|^7|^8")){
             System.out.println("\nOpção inválida. Tente novamente\n");
             return "null";
         }
 
-        switch(input){ 
+        switch(input){
             
             case "1":
                 System.out.println("\nDigite login e senha:");
                 //System.out.println("\nDigite login, senha e data de nascimento:");
                 input = scanner.nextLine(); 
                 output = input;
-                adicionarUsuario(input);
+                sistema.adicionarUsuario(input);
                 break; 
             
             case "2":
                 System.out.println("\nDigite login:");
                 input = scanner.nextLine(); 
                 output = input;
-                excluirUsuario(input); 
+                sistema.excluirUsuario(input);
                 break;
             
             case "3":
                 output = input;
-                listarUsuarios1(); 
+                sistema.listarUsuarios1();
                 break;
 
             case "4":
                 output = input;
-                listarUsuarios2(); 
+                sistema.listarUsuarios2();
                 break;    
             
             case "5":
-                encerrarPrograma(); 
-                break; 
+                System.out.println("\nDigite login:");
+                input = scanner.nextLine();
+                output = input;
+                sistema.adicionarPedido(input);
+                break;
+
+            case "6":
+                System.out.println("\nTodos pedidos:");
+                sistema.listarPedidos();
+                break;
+
+            case "7":
+                sistema.encerrarPrograma();
+                break;
         }
 
         return output; 
 
     }
 
-	private void adicionarUsuario(String args){
-        try{
-            gerente.adicionar(args);
-		    //gerente.listarTodos();        
-        
-        } catch(AdicaoUsuarioException e){
-            System.out.println(e.getMessage());
-        
-        } catch(ErroInternoException e){
-            System.out.println(e.getMessage());
-        }
-    }
 
-    private void excluirUsuario(String args){
-        try{
-            gerente.remover(args);
-            //gerente.listarTodos();
-        
-        } catch(LoginUsuarioException e){
-            System.out.println(e.getMessage());
-        
-        } catch(ErroInternoException e){
-            System.out.println(e.getMessage());
-        }
-    }
-
-    private void listarUsuarios1(){
-        gerente.listarTodosPorOrdemAlfabetica();
-    }
-
-    private void listarUsuarios2(){
-        gerente.listarTodosPorOrdemDataDeNascimento();
-    }
-
-    private void encerrarPrograma(){
-        try{
-            gerente.encerrar();
-        } catch(ErroInternoException e){
-            System.out.println(e.getMessage());
-        }
-    }
 
 }
