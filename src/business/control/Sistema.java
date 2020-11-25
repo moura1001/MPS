@@ -3,6 +3,8 @@ package business.control;
 import util.AdicaoUsuarioException;
 import util.ErroInternoException;
 import util.LoginUsuarioException;
+import business.report.GeradorRelatorioHTML;
+import business.report.GeradorRelatorioTXT;
 
 import java.util.Scanner;
 
@@ -61,6 +63,18 @@ public class Sistema {
 
     public void listarPedidos() {
         gerentePedido.listarTodos();
+    }
+
+    public void gerarRelatorio(String tipo){
+        switch(tipo){            
+            case "html":
+                new GeradorRelatorioHTML().gerarRelatorio();
+                break;
+            
+            case "txt":
+                new GeradorRelatorioTXT().gerarRelatorio();
+                break;    
+        }
     }
 
     public void encerrarPrograma(){

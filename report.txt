@@ -1,0 +1,1 @@
+A quantidade de usuarios eh igual a:12

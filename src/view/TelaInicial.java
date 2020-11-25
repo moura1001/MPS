@@ -22,6 +22,8 @@ public class TelaInicial{
                 "Listar todos os usuários por ordem data de nascimento",
                 "Adicionar pedido",
                 "Lista todos pedidos",
+                "Gerar relatório HTML",
+                "Gerar relatório TXT",
                 "Encerrar programa"
         };
 
@@ -73,6 +75,14 @@ public class TelaInicial{
                 break;
 
             case "7":
+                sistema.gerarRelatorio("html");
+                break;
+            
+            case "8":
+                sistema.gerarRelatorio("txt");
+                break;
+            
+            case "9":
                 input = null;
                 sistema.encerrarPrograma();
                 break;
