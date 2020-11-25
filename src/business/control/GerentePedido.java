@@ -19,10 +19,11 @@ import infra.FabricaGerentePersistencia;
 
 public class GerentePedido {
     
+    private static GerentePedido gerente;
     private TreeSet<Usuario> usuarios;
     private GerentePersistencia repositorio;
 
-    public GerentePedido(TreeSet<Usuario> usuarios) {
+    private GerentePedido(TreeSet<Usuario> usuarios) {
         this.repositorio = FabricaGerentePersistencia.obterGerentePersistencia("arquivo");
         this.usuarios = usuarios;        
     }
@@ -55,5 +56,12 @@ public class GerentePedido {
 
     public void remover(int id) {
 
+    }
+
+    public static GerentePedido getGerente(){
+        if(gerente == null)
+            gerente = new GerentePedido(GerenteUsuario.getGerente().getUsuarios());
+
+        return gerente;    
     }
 }

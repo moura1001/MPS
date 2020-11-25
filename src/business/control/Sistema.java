@@ -12,12 +12,8 @@ public class Sistema {
     GerentePedido gerentePedido;
     
     public Sistema() {
-        try{
-            this.gerente = new GerenteUsuario();
-            this.gerentePedido = new GerentePedido(this.gerente.getUsuarios());
-        } catch(ErroInternoException e){
-            System.out.println(e.getMessage());
-        }
+        this.gerente = GerenteUsuario.getGerente();
+        this.gerentePedido = GerentePedido.getGerente();        
     }
 
     public void adicionarUsuario(String args){

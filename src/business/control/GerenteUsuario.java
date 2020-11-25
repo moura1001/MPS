@@ -13,10 +13,12 @@ import infra.GerentePersistencia;
 import infra.FabricaGerentePersistencia;
 
 public class GerenteUsuario implements IGerente{
+
+    private static GerenteUsuario gerente;
     private TreeSet<Usuario> usuarios;
     private GerentePersistencia repositorioUsuario;
 
-    public GerenteUsuario() throws ErroInternoException{
+    private GerenteUsuario() throws ErroInternoException{
         try{
             this.repositorioUsuario = FabricaGerentePersistencia.obterGerentePersistencia("arquivo");
             this.usuarios = this.repositorioUsuario.carregarUsuarios();
@@ -138,6 +140,19 @@ public class GerenteUsuario implements IGerente{
 
     public TreeSet<Usuario> getUsuarios(){
     	return this.usuarios;
+    }
+
+    public static GerenteUsuario getGerente(){
+        if(gerente == null){
+            try{
+                gerente = new GerenteUsuario();
+            } catch(ErroInternoException e){
+                System.out.println(e.getMessage());
+                System.exit(-1);
+            }            
+        }
+
+        return gerente;    
     }
 
 }
