@@ -10,10 +10,11 @@ public class Sistema {
 
     GerenteUsuario gerente;
     GerentePedido gerentePedido;
+    
     public Sistema() {
         try{
             this.gerente = new GerenteUsuario();
-            this.gerentePedido = new GerentePedido();
+            this.gerentePedido = new GerentePedido(this.gerente.getUsuarios());
         } catch(ErroInternoException e){
             System.out.println(e.getMessage());
         }

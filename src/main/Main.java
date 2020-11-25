@@ -1,6 +1,5 @@
 package main;
 
-import business.control.GerenteUsuario;
 import view.TelaInicial;
 
 public class Main{

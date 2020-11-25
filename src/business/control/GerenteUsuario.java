@@ -10,7 +10,7 @@ import util.AdicaoUsuarioException;
 import util.PersistenciaException;
 import util.ErroInternoException;
 import infra.GerentePersistencia;
-import infra.GerentePersistenciaFile;
+import infra.FabricaGerentePersistencia;
 
 public class GerenteUsuario implements IGerente{
     private TreeSet<Usuario> usuarios;
@@ -18,7 +18,7 @@ public class GerenteUsuario implements IGerente{
 
     public GerenteUsuario() throws ErroInternoException{
         try{
-            this.repositorioUsuario = new GerentePersistenciaFile();
+            this.repositorioUsuario = FabricaGerentePersistencia.obterGerentePersistencia("arquivo");
             this.usuarios = this.repositorioUsuario.carregarUsuarios();
         } catch(PersistenciaException e){
             throw new ErroInternoException("Erro interno durante a inicialização. Por favor, entre em contato com o administrador");
@@ -134,6 +134,10 @@ public class GerenteUsuario implements IGerente{
             if(usuario.getLogin().equals(login))
                 return usuario;
         return null;
+    }
+
+    public TreeSet<Usuario> getUsuarios(){
+    	return this.usuarios;
     }
 
 }

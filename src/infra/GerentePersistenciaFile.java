@@ -19,10 +19,10 @@ public class GerentePersistenciaFile implements GerentePersistencia{
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = br.readLine()) != null) {
-                String[] usuario = line.split("\t");
+                String[] usuario = line.split("[\\t\\n]");
                 String login = usuario[0];
                 String senha = usuario[1];
-                String data = usuario[2].split("\n")[0];
+                String data = usuario[2];
                 ArrayList<Pedido> pedidosArrayList = new ArrayList<Pedido>();
                 if (usuario.length > 3) {
                     String[] pedidos = usuario[3].split("# ");

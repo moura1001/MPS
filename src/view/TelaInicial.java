@@ -3,13 +3,7 @@ package view;
 import java.awt.*;
 import java.util.Scanner;
 
-import business.control.GerentePedido;
 import business.control.Sistema;
-import util.AdicaoUsuarioException;
-import util.LoginUsuarioException;
-import util.ErroInternoException;
-import business.control.GerenteUsuario;
-import infra.GerentePersistenciaFile;
 
 public class TelaInicial{
 
@@ -31,16 +25,15 @@ public class TelaInicial{
                 "Encerrar programa"
         };
 
-        for (int i = 0; i < acoes.length; i++) {
+        for (int i = 1; i < acoes.length; i++) {
             System.out.println(String.valueOf(i) + ": " + acoes[i]);
         }
 
 
         Scanner scanner = new Scanner(System.in);
 		String input = scanner.nextLine();
-        String output = null;
 
-        if(input == null || !input.matches("^1|^2|^3|^4|^5|^6|^7|^8")){
+        if(input == null){
             System.out.println("\nOpção inválida. Tente novamente\n");
             return "null";
         }
@@ -51,31 +44,26 @@ public class TelaInicial{
                 System.out.println("\nDigite login e senha:");
                 //System.out.println("\nDigite login, senha e data de nascimento:");
                 input = scanner.nextLine(); 
-                output = input;
                 sistema.adicionarUsuario(input);
                 break; 
             
             case "2":
                 System.out.println("\nDigite login:");
                 input = scanner.nextLine(); 
-                output = input;
                 sistema.excluirUsuario(input);
                 break;
             
             case "3":
-                output = input;
                 sistema.listarUsuarios1();
                 break;
 
             case "4":
-                output = input;
                 sistema.listarUsuarios2();
                 break;    
             
             case "5":
                 System.out.println("\nDigite login:");
                 input = scanner.nextLine();
-                output = input;
                 sistema.adicionarPedido(input);
                 break;
 
@@ -85,11 +73,15 @@ public class TelaInicial{
                 break;
 
             case "7":
+                input = null;
                 sistema.encerrarPrograma();
                 break;
+
+            default:
+                System.out.println("\nOpção inválida. Tente novamente\n");    
         }
 
-        return output; 
+        return input; 
 
     }
 

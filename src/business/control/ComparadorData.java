@@ -14,11 +14,13 @@ public class ComparadorData implements Comparator<Usuario>{
         int mes = data1.getMes() - data2.getMes();
         int dia = data1.getDia() - data2.getDia();
 
-        if(ano >= 0){
+        if(ano > 0)
+        	return -1;        
+        else if(ano == 0){
             if(mes > 0)
                 return -1;
             else if(mes == 0){
-                if(dia > 0)
+                if(dia >= 0)
                     return -1;
                 else
                     return 1;

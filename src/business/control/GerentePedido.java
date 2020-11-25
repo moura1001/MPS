@@ -15,19 +15,16 @@ import util.AdicaoUsuarioException;
 import util.PersistenciaException;
 import util.ErroInternoException;
 import infra.GerentePersistencia;
-import infra.GerentePersistenciaFile;
+import infra.FabricaGerentePersistencia;
 
 public class GerentePedido {
+    
     private TreeSet<Usuario> usuarios;
     private GerentePersistencia repositorio;
 
-    public GerentePedido() {
-        try {
-            this.repositorio = new GerentePersistenciaFile();
-            this.usuarios = this.repositorio.carregarUsuarios();
-        } catch (PersistenciaException e) {
-            // throw new ErroInternoException("Erro interno durante a inicialização. Por favor, entre em contato com o administrador");
-        }
+    public GerentePedido(TreeSet<Usuario> usuarios) {
+        this.repositorio = FabricaGerentePersistencia.obterGerentePersistencia("arquivo");
+        this.usuarios = usuarios;        
     }
 
     public void adicionar(String[] itens, double valor, String login) {
@@ -45,13 +42,15 @@ public class GerentePedido {
 
     public void listarTodos() {
         for (Usuario usuario : usuarios) {
+            System.out.print("# ");
             ArrayList<Pedido> pedidos = usuario.getPedidos();
             for (int i = 0; i < pedidos.size(); i++) {
-                System.out.print("itens: " + String.join(" ", pedidos.get(i).getItens()) + " ");
-                System.out.print("valor: " + pedidos.get(i).getValor());
+                System.out.print("item: " + String.join(" ", pedidos.get(i).getItens()) + " ");
+                System.out.print("valor: " + pedidos.get(i).getValor() + " ");
             }
+            System.out.println();
         }
-
+        System.out.println("\n");
     }
 
     public void remover(int id) {
