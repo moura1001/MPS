@@ -54,7 +54,25 @@ public class GerentePedido {
         System.out.println("\n");
     }
 
-    public void remover(int id) {
+    public void removerPedido(String login, String item) {
+        for (Usuario usuario : usuarios) {
+            if (usuario.getLogin().equals(login)) {
+                ArrayList<Pedido> pedidos = usuario.getPedidos();
+                for (Pedido pedido: pedidos) {
+                    if (pedido.getItens().length > 0 && pedido.getItens()[0].equals(item)) {
+                        pedidos.remove(pedido);
+                        break;
+                    }
+                }
+            }
+        }
+
+        try {
+            this.repositorio.salvarUsuarios(usuarios);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
 
     }
 

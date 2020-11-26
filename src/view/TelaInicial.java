@@ -21,6 +21,7 @@ public class TelaInicial{
                 "Listar todos os usuários por ordem alfabética",
                 "Listar todos os usuários por ordem data de nascimento",
                 "Adicionar pedido",
+                "Remover pedido",
                 "Lista todos pedidos",
                 "Gerar relatório HTML",
                 "Gerar relatório TXT",
@@ -70,19 +71,25 @@ public class TelaInicial{
                 break;
 
             case "6":
+                System.out.println("\nDigite login:");
+                input = scanner.nextLine();
+                sistema.removerPedido(input);
+                break;
+
+            case "7":
                 System.out.println("\nTodos pedidos:");
                 sistema.listarPedidos();
                 break;
 
-            case "7":
+            case "8":
                 sistema.gerarRelatorio("html");
                 break;
             
-            case "8":
+            case "9":
                 sistema.gerarRelatorio("txt");
                 break;
             
-            case "9":
+            case "10":
                 input = null;
                 sistema.encerrarPrograma();
                 break;

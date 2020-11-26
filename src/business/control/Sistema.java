@@ -69,6 +69,13 @@ public class Sistema {
         gerentePedido.adicionar(itens, valor, login);
     }
 
+    public void removerPedido(String login) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Escolha o item a ser removido: ");
+        String input = scanner.nextLine();
+        gerentePedido.removerPedido(login, input);
+    }
+
     public void listarPedidos() {
         gerentePedido.listarTodos();
     }
