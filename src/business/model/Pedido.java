@@ -1,8 +1,8 @@
-
 package business.model;
 
+import java.io.Serializable;
 
-public class Pedido {
+public class Pedido implements Serializable{
   private String[] itens;
   private double valor;
 

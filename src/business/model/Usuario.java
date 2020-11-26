@@ -3,8 +3,9 @@ package business.model;
 import business.model.Pedido;
 import java.util.ArrayList;
 import java.lang.Comparable;
+import java.io.Serializable;
 
-public class Usuario implements Comparable<Usuario>{
+public class Usuario implements Comparable<Usuario>, Serializable{
 
     private String login;
     private String senha;
