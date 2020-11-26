@@ -1,12 +1,15 @@
 package business.report;
 
+import business.control.Sistema;
 import business.control.GerenteUsuario;
+import business.control.GerentePedido;
 
 public abstract class GeradorRelatorio{
 
     //atributes
-    public int numeroUsuarios;
-    public String textoRelatorio;
+    protected int usuariosCadastrados;
+    protected int acessosUsuarios;
+    protected String textoRelatorio;
 
     // Template Method
     public void gerarRelatorio(){
@@ -18,8 +21,13 @@ public abstract class GeradorRelatorio{
 
 
     public void adquirirDados(){
-        // Adquirir os dados para fazer o relatorio       
-        this.numeroUsuarios = GerenteUsuario.getGerente().getUsuarios().size();
+        // Adquirir os dados para fazer o relatorio   
+        GerenteUsuario gerenteUsuario = GerenteUsuario.getGerente();
+		GerentePedido gerentePedido = GerentePedido.getGerente();
+		Sistema sistema = Sistema.obterInstancia(gerenteUsuario, gerentePedido);    
+        
+        this.usuariosCadastrados = gerenteUsuario.quantidadeUsuariosCadastrados();
+        this.acessosUsuarios = sistema.numeroAcessos();
     }
 
     /*
@@ -30,11 +38,12 @@ public abstract class GeradorRelatorio{
     */
 
     public void criarTextoRelatorio(){
-        if (this.numeroUsuarios != 0){
-            this.textoRelatorio = "A quantidade de usuarios eh igual a:" + Integer.toString(this.numeroUsuarios);            
+        if (this.usuariosCadastrados != 0){
+            this.textoRelatorio = "A quantidade de usuários cadastrados é igual a: " + Integer.toString(this.usuariosCadastrados);
+            this.textoRelatorio += "\nA quantidade de acessos é igual a: " + Integer.toString(this.acessosUsuarios);            
         
         } else{
-            this.textoRelatorio = "A quantidade de usuarios eh igual a zero";
+            this.textoRelatorio = "Não há usuários cadastrados";
         }
     }
 

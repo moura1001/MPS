@@ -1,1 +1,2 @@
-A quantidade de usuarios eh igual a:12
+A quantidade de usuários cadastrados é igual a: 12
+A quantidade de acessos é igual a: 0

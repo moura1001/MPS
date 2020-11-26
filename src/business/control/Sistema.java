@@ -3,8 +3,8 @@ package business.control;
 import util.AdicaoUsuarioException;
 import util.ErroInternoException;
 import util.LoginUsuarioException;
-import business.report.GeradorRelatorioHTML;
-import business.report.GeradorRelatorioTXT;
+import business.report.GeradorRelatorio;
+import business.authentication.AdaptadorAutenticador;
 
 import java.util.Scanner;
 
@@ -13,10 +13,12 @@ public class Sistema {
     private static Sistema sistema;
     GerenteUsuario gerenteUsuario;
     GerentePedido gerentePedido;
+    private int numeroAcessosUsuarios;
 
-    public Sistema(GerenteUsuario gerenteUsuario, GerentePedido gerentePedido) {
+    private Sistema(GerenteUsuario gerenteUsuario, GerentePedido gerentePedido) {
         this.gerenteUsuario = gerenteUsuario;
         this.gerentePedido = gerentePedido;
+        this.numeroAcessosUsuarios = 0;
     }
 
     public static Sistema obterInstancia(GerenteUsuario gerenteUsuario, GerentePedido gerentePedido) {
@@ -80,16 +82,34 @@ public class Sistema {
         gerentePedido.listarTodos();
     }
 
-    public void gerarRelatorio(String tipo){
-        switch(tipo){            
-            case "html":
-                new GeradorRelatorioHTML().gerarRelatorio();
-                break;
-            
-            case "txt":
-                new GeradorRelatorioTXT().gerarRelatorio();
-                break;    
+    public void gerarRelatorio(GeradorRelatorio geradorRelatorio){
+        geradorRelatorio.gerarRelatorio();
+    }
+
+    public void login(String usuario, AdaptadorAutenticador autenticador){
+        if(usuario == null)
+            System.out.println("\nFalha na autenticação. Digite Login e senha\n");
+
+        String[] info = usuario.split("[\\t ]");
+
+        if(info.length != 2){
+            System.out.println("\nFalha na autenticação. Login ou senha não informados\n");
+            return;
         }
+
+        String email = info[0];
+        String senha = info[1];
+        
+        if(autenticador.autenticar(email, senha)){
+            System.out.println("\nAutenticação realizada. Login bem-sucedido.\n");
+            this.numeroAcessosUsuarios++;
+        }
+        else
+            System.out.println("\nFalha na autenticação. Login ou senha incorretos.\n");
+    }
+
+    public int numeroAcessos() {
+        return this.numeroAcessosUsuarios;
     }
 
     public void encerrarPrograma(){

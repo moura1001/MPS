@@ -155,4 +155,8 @@ public class GerenteUsuario implements IGerente{
         return gerente;    
     }
 
+    public int quantidadeUsuariosCadastrados(){
+    	return this.usuarios.size();
+    }
+
 }

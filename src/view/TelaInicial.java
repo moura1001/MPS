@@ -4,6 +4,8 @@ import java.awt.*;
 import java.util.Scanner;
 
 import business.control.Sistema;
+import business.report.FabricaGeradorRelatorio;
+import business.authentication.FabricaAdaptadorAutenticador;
 
 public class TelaInicial{
 
@@ -25,6 +27,7 @@ public class TelaInicial{
                 "Lista todos pedidos",
                 "Gerar relatório HTML",
                 "Gerar relatório TXT",
+                "Login com conta Google",
                 "Encerrar programa"
         };
 
@@ -82,14 +85,20 @@ public class TelaInicial{
                 break;
 
             case "8":
-                sistema.gerarRelatorio("html");
+                sistema.gerarRelatorio(FabricaGeradorRelatorio.obterGeradorRelatorio("html"));
                 break;
             
             case "9":
-                sistema.gerarRelatorio("txt");
+                sistema.gerarRelatorio(FabricaGeradorRelatorio.obterGeradorRelatorio("txt"));
                 break;
             
             case "10":
+                System.out.println("\nDigite login e senha do Google:");
+                input = scanner.nextLine();
+                sistema.login(input, FabricaAdaptadorAutenticador.obterAdaptadorAutenticador("google"));
+                break;
+            
+            case "11":
                 input = null;
                 sistema.encerrarPrograma();
                 break;
