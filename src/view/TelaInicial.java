@@ -9,8 +9,8 @@ public class TelaInicial{
 
     Sistema sistema;
 
-    public TelaInicial() {
-        this.sistema = new Sistema();
+    public TelaInicial(Sistema sistema) {
+        this.sistema = sistema;
     }
 
     public String menu(){

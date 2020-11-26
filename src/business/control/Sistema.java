@@ -10,17 +10,25 @@ import java.util.Scanner;
 
 public class Sistema {
 
-    GerenteUsuario gerente;
+    private static Sistema sistema;
+    GerenteUsuario gerenteUsuario;
     GerentePedido gerentePedido;
-    
-    public Sistema() {
-        this.gerente = GerenteUsuario.getGerente();
-        this.gerentePedido = GerentePedido.getGerente();        
+
+    public Sistema(GerenteUsuario gerenteUsuario, GerentePedido gerentePedido) {
+        this.gerenteUsuario = gerenteUsuario;
+        this.gerentePedido = gerentePedido;
+    }
+
+    public static Sistema obterInstancia(GerenteUsuario gerenteUsuario, GerentePedido gerentePedido) {
+        if (sistema == null) {
+            sistema = new Sistema(gerenteUsuario, gerentePedido);
+        }
+        return sistema;
     }
 
     public void adicionarUsuario(String args){
         try{
-            gerente.adicionar(args);
+            gerenteUsuario.adicionar(args);
             //gerente.listarTodos();
 
         } catch(AdicaoUsuarioException e){
@@ -33,7 +41,7 @@ public class Sistema {
 
     public void excluirUsuario(String args){
         try{
-            gerente.remover(args);
+            gerenteUsuario.remover(args);
             //gerente.listarTodos();
 
         } catch(LoginUsuarioException e){
@@ -45,11 +53,11 @@ public class Sistema {
     }
 
     public void listarUsuarios1(){
-        gerente.listarTodosPorOrdemAlfabetica();
+        gerenteUsuario.listarTodosPorOrdemAlfabetica();
     }
 
     public void listarUsuarios2(){
-        gerente.listarTodosPorOrdemDataDeNascimento();
+        gerenteUsuario.listarTodosPorOrdemDataDeNascimento();
     }
 
     public void adicionarPedido(String login) {
@@ -79,7 +87,7 @@ public class Sistema {
 
     public void encerrarPrograma(){
         try{
-            gerente.encerrar();
+            gerenteUsuario.encerrar();
         } catch(ErroInternoException e){
             System.out.println(e.getMessage());
         }
