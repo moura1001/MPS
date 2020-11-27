@@ -25,6 +25,9 @@ public class TelaInicial{
                 "Adicionar pedido",
                 "Remover pedido",
                 "Lista todos pedidos",
+                "Adicionar item",
+                "Remover item",
+                "Lista todos itens",
                 "Gerar relatório HTML",
                 "Gerar relatório TXT",
                 "Login com conta Google",
@@ -85,20 +88,37 @@ public class TelaInicial{
                 break;
 
             case "8":
+                System.out.println("\nDigite nome do item:");
+                input = scanner.nextLine();
+                sistema.adicionarItem(input);
+                break;
+
+            case "9":
+                System.out.println("\nDigite nome do item:");
+                input = scanner.nextLine();
+                sistema.removerItem(input);
+                break;
+
+            case "10":
+                System.out.println("\nTodos os itens:");
+                sistema.listarItens();
+                break;    
+
+            case "11":
                 sistema.gerarRelatorio(FabricaGeradorRelatorio.obterGeradorRelatorio("html"));
                 break;
             
-            case "9":
+            case "12":
                 sistema.gerarRelatorio(FabricaGeradorRelatorio.obterGeradorRelatorio("txt"));
                 break;
             
-            case "10":
+            case "13":
                 System.out.println("\nDigite login e senha do Google:");
                 input = scanner.nextLine();
                 sistema.login(input, FabricaAdaptadorAutenticador.obterAdaptadorAutenticador("google"));
                 break;
             
-            case "11":
+            case "14":
                 input = null;
                 sistema.encerrarPrograma();
                 break;

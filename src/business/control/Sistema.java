@@ -3,9 +3,11 @@ package business.control;
 import util.AdicaoUsuarioException;
 import util.ErroInternoException;
 import util.LoginUsuarioException;
+import util.ItemException;
 import business.report.GeradorRelatorio;
 import business.authentication.AdaptadorAutenticador;
-
+import business.model.Item;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Sistema {
@@ -13,17 +15,19 @@ public class Sistema {
     private static Sistema sistema;
     GerenteUsuario gerenteUsuario;
     GerentePedido gerentePedido;
+    GerenteItem gerenteItem;
     private int numeroAcessosUsuarios;
 
-    private Sistema(GerenteUsuario gerenteUsuario, GerentePedido gerentePedido) {
-        this.gerenteUsuario = gerenteUsuario;
-        this.gerentePedido = gerentePedido;
+    private Sistema() {
+        this.gerenteUsuario = GerenteUsuario.getGerente();
+        this.gerentePedido = GerentePedido.getGerente();
+        this.gerenteItem = GerenteItem.getGerente();
         this.numeroAcessosUsuarios = 0;
     }
 
-    public static Sistema obterInstancia(GerenteUsuario gerenteUsuario, GerentePedido gerentePedido) {
+    public static Sistema obterInstancia() {
         if (sistema == null) {
-            sistema = new Sistema(gerenteUsuario, gerentePedido);
+            sistema = new Sistema();
         }
         return sistema;
     }
@@ -62,7 +66,7 @@ public class Sistema {
         gerenteUsuario.listarTodosPorOrdemDataDeNascimento();
     }
 
-    public void adicionarPedido(String login) {
+    /*public void adicionarPedido(String login) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Escolha 1 item e seu valor: ");
         String input = scanner.nextLine();
@@ -76,10 +80,55 @@ public class Sistema {
         System.out.println("Escolha o item a ser removido: ");
         String input = scanner.nextLine();
         gerentePedido.removerPedido(login, input);
+    }*/
+
+    public void adicionarPedido(String login) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Escolha 1 item e seu valor: ");
+        String input = scanner.nextLine();
+        Item[] itens = {gerenteItem.getItem(input.split(" ")[0])};
+        double valor = Double.parseDouble(input.split(" ")[1]);
+        gerentePedido.adicionar(itens, valor, login);
+    }
+
+    public void removerPedido(String login) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Escolha o item a ser removido: ");
+        String input = scanner.nextLine();
+        gerentePedido.removerPedido(login, input);
     }
 
     public void listarPedidos() {
         gerentePedido.listarTodos();
+    }
+
+    public void adicionarItem(String nome){
+
+        try{
+            gerenteItem.adicionar(nome);
+
+        } catch(ItemException e){
+            System.out.println(e.getMessage());
+
+        } catch(ErroInternoException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void removerItem(String nome) {
+        try{
+            gerenteItem.remover(nome);
+
+        } catch(ItemException e){
+            System.out.println(e.getMessage());
+
+        } catch(ErroInternoException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void listarItens() {
+        gerenteItem.listarTodos();
     }
 
     public void gerarRelatorio(GeradorRelatorio geradorRelatorio){

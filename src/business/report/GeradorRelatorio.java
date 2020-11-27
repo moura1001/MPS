@@ -24,7 +24,7 @@ public abstract class GeradorRelatorio{
         // Adquirir os dados para fazer o relatorio   
         GerenteUsuario gerenteUsuario = GerenteUsuario.getGerente();
 		GerentePedido gerentePedido = GerentePedido.getGerente();
-		Sistema sistema = Sistema.obterInstancia(gerenteUsuario, gerentePedido);    
+		Sistema sistema = Sistema.obterInstancia();    
         
         this.usuariosCadastrados = gerenteUsuario.quantidadeUsuariosCadastrados();
         this.acessosUsuarios = sistema.numeroAcessos();

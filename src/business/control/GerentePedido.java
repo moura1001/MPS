@@ -2,16 +2,12 @@ package business.control;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.TreeSet;
 
 import business.model.Pedido;
 import business.model.Usuario;
-import business.model.Data;
+import business.model.Item;
 import util.LoginUsuarioException;
-import util.SenhaUsuarioException;
-import util.DataUsuarioException;
-import util.AdicaoUsuarioException;
 import util.PersistenciaException;
 import util.ErroInternoException;
 import infra.GerentePersistencia;
@@ -28,7 +24,7 @@ public class GerentePedido {
         this.usuarios = usuarios;        
     }
 
-    public void adicionar(String[] itens, double valor, String login) {
+    public void adicionar(Item[] itens, double valor, String login) {
         System.out.println("PEDIDO CADASTRADO");
         for (Usuario usuario : usuarios)
             if (usuario.getLogin().equals(login))
@@ -46,7 +42,7 @@ public class GerentePedido {
             System.out.print("# ");
             ArrayList<Pedido> pedidos = usuario.getPedidos();
             for (int i = 0; i < pedidos.size(); i++) {
-                System.out.print("item: " + String.join(" ", pedidos.get(i).getItens()) + " ");
+                System.out.print("item: " + String.join(" ", Arrays.toString(pedidos.get(i).getItens())) + " ");
                 System.out.print("valor: " + pedidos.get(i).getValor() + " ");
             }
             System.out.println();
@@ -59,7 +55,7 @@ public class GerentePedido {
             if (usuario.getLogin().equals(login)) {
                 ArrayList<Pedido> pedidos = usuario.getPedidos();
                 for (Pedido pedido: pedidos) {
-                    if (pedido.getItens().length > 0 && pedido.getItens()[0].equals(item)) {
+                    if (pedido.getItens().length > 0 && pedido.getItens()[0].getNome().equals(item)) {
                         pedidos.remove(pedido);
                         break;
                     }

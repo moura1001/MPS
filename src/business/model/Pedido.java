@@ -3,15 +3,15 @@ package business.model;
 import java.io.Serializable;
 
 public class Pedido implements Serializable{
-  private String[] itens;
+  private Item[] itens;
   private double valor;
 
-  public Pedido(String[] itens, double valor) {
+  public Pedido(Item[] itens, double valor) {
     this.itens = itens;
     this.valor = valor;
   }
 
-  public String[] getItens() {
+  public Item[] getItens(){
     return itens;
   } 
 

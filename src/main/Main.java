@@ -8,10 +8,8 @@ import view.TelaInicial;
 public class Main{
 
 	public static void main(String[] args){
-		GerenteUsuario gerenteUsuario = GerenteUsuario.getGerente();
-		GerentePedido gerentePedido = GerentePedido.getGerente();
 
-		Sistema sistema = Sistema.obterInstancia(gerenteUsuario, gerentePedido);
+		Sistema sistema = Sistema.obterInstancia();
 
 		TelaInicial tela = new TelaInicial(sistema);
 		
