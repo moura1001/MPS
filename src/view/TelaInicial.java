@@ -4,15 +4,18 @@ import java.awt.*;
 import java.util.Scanner;
 
 import business.control.Sistema;
+import business.control.GerentePagamento;
 import business.report.FabricaGeradorRelatorio;
 import business.authentication.FabricaAdaptadorAutenticador;
 
 public class TelaInicial{
 
     Sistema sistema;
+    GerentePagamento gerentePagamento;
 
     public TelaInicial(Sistema sistema) {
         this.sistema = sistema;
+        gerentePagamento = GerentePagamento.getGerente();
     }
 
     public String menu(){
@@ -28,6 +31,10 @@ public class TelaInicial{
                 "Adicionar item",
                 "Remover item",
                 "Listar todos os itens",
+                "Adicionar pagamento",
+                "Atualizar pagamento",
+                "Buscar pagamento",
+                //"Desfazer alteração no pagamento",
                 "Gerar relatório HTML",
                 "Gerar relatório TXT",
                 "Login com conta Google",
@@ -108,20 +115,38 @@ public class TelaInicial{
                 break;    
 
             case "11":
-                sistema.gerarRelatorio(FabricaGeradorRelatorio.obterGeradorRelatorio("html"));
+                System.out.println("\nDigite login e valor do pagamento:");
+                input = scanner.nextLine();
+                gerentePagamento.service("adicionar", input);
                 break;
             
             case "12":
-                sistema.gerarRelatorio(FabricaGeradorRelatorio.obterGeradorRelatorio("txt"));
+                System.out.println("\nDigite login, id do pagamento e novo valor:");
+                input = scanner.nextLine();
+                gerentePagamento.service("atualizar", input);
                 break;
             
             case "13":
+                System.out.println("\nDigite login e id do pagamento:");
+                input = scanner.nextLine();
+                gerentePagamento.service("buscar", input);
+                break;
+            
+            case "14":
+                sistema.gerarRelatorio(FabricaGeradorRelatorio.obterGeradorRelatorio("html"));
+                break;
+            
+            case "15":
+                sistema.gerarRelatorio(FabricaGeradorRelatorio.obterGeradorRelatorio("txt"));
+                break;
+            
+            case "16":
                 System.out.println("\nDigite login e senha do Google:");
                 input = scanner.nextLine();
                 sistema.login(input, FabricaAdaptadorAutenticador.obterAdaptadorAutenticador("google"));
                 break;
             
-            case "14":
+            case "17":
                 input = null;
                 sistema.encerrarPrograma();
                 break;
