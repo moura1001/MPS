@@ -7,7 +7,6 @@ import util.ItemException;
 import business.report.GeradorRelatorio;
 import business.authentication.AdaptadorAutenticador;
 import business.model.Item;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Sistema {
@@ -66,46 +65,40 @@ public class Sistema {
         gerenteUsuario.listarTodosPorOrdemDataDeNascimento();
     }
 
-    /*public void adicionarPedido(String login) {
+    public void adicionarNoPedido(String login) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Escolha 1 item e seu valor: ");
+        System.out.println("Escolha 1 item: ");
         String input = scanner.nextLine();
-        String[] itens = {input.split(" ")[0]};
-        double valor = Double.parseDouble(input.split(" ")[1]);
-        gerentePedido.adicionar(itens, valor, login);
+        Item item = null;
+        try{
+            item = GerenteItem.getGerente().getItem(input.split(" ")[0]);
+
+        } catch(ItemException e){
+            System.out.println(e.getMessage());
+            return;
+        }
+        gerentePedido.adicionar(item, login);
     }
 
-    public void removerPedido(String login) {
+    public void removerDoPedido(String login) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Escolha o item a ser removido: ");
         String input = scanner.nextLine();
-        gerentePedido.removerPedido(login, input);
-    }*/
-
-    public void adicionarPedido(String login) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Escolha 1 item e seu valor: ");
-        String input = scanner.nextLine();
-        Item[] itens = {gerenteItem.getItem(input.split(" ")[0])};
-        double valor = Double.parseDouble(input.split(" ")[1]);
-        gerentePedido.adicionar(itens, valor, login);
+        gerentePedido.removerItemDoPedido(login, input);
     }
 
     public void removerPedido(String login) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Escolha o item a ser removido: ");
-        String input = scanner.nextLine();
-        gerentePedido.removerPedido(login, input);
+        gerentePedido.removerPedido(login);
     }
 
     public void listarPedidos() {
         gerentePedido.listarTodos();
     }
 
-    public void adicionarItem(String nome){
+    public void adicionarItem(String item){
 
         try{
-            gerenteItem.adicionar(nome);
+            gerenteItem.adicionar(item);
 
         } catch(ItemException e){
             System.out.println(e.getMessage());
@@ -164,6 +157,7 @@ public class Sistema {
     public void encerrarPrograma(){
         try{
             gerenteUsuario.encerrar();
+            gerenteItem.encerrar();
         } catch(ErroInternoException e){
             System.out.println(e.getMessage());
         }

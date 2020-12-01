@@ -1,21 +1,31 @@
 package business.model;
 
 import java.io.Serializable;
+import java.util.TreeSet;
 
 public class Pedido implements Serializable{
-  private Item[] itens;
-  private double valor;
+    private TreeSet<Item> itens;
+    private double valorTotal;
+    
+    public Pedido() {
+        this.itens = new TreeSet<Item>();
+	    this.valorTotal = 0;
+    }
 
-  public Pedido(Item[] itens, double valor) {
-    this.itens = itens;
-    this.valor = valor;
-  }
+    public Pedido(TreeSet<Item> itens, double valorTotal) {
+        this.itens = itens;
+        this.valorTotal = valorTotal;
+    }
+    
+    public TreeSet<Item> getItens(){
+        return this.itens;
+    }
+    
+    public double getValor() {
+        return valorTotal;
+    }
 
-  public Item[] getItens(){
-    return itens;
-  } 
-
-  public double getValor() {
-    return valor;
-  } 
+    public void setValorTotal(double valor){
+        this.valorTotal = valor;
+    } 
 }

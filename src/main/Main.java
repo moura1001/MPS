@@ -1,7 +1,5 @@
 package main;
 
-import business.control.GerentePedido;
-import business.control.GerenteUsuario;
 import business.control.Sistema;
 import view.TelaInicial;
 

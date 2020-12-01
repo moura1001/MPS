@@ -7,6 +7,7 @@ import util.PersistenciaException;
 import util.ErroInternoException;
 import infra.GerentePersistencia;
 import infra.FabricaGerentePersistencia;
+import java.lang.NumberFormatException;
 
 public class GerenteItem{
 
@@ -17,7 +18,9 @@ public class GerenteItem{
     private GerenteItem() throws ErroInternoException{
         try{
             this.repositorioItem = FabricaGerentePersistencia.obterGerentePersistencia("arquivo");
-            this.itens = this.repositorioItem.carregarItens();
+            this.itens = (TreeSet<Item>) this.repositorioItem.carregar("itens");
+            if(this.itens == null)
+                this.itens = new TreeSet<Item>();
         } catch(PersistenciaException e){
             throw new ErroInternoException("Erro interno durante a inicialização. Por favor, entre em contato com o administrador");
         }        
@@ -30,19 +33,27 @@ public class GerenteItem{
 
         String[] info = item.split("[\\t ]");
 
-        if(info.length != 1)
+        if(info.length != 2)
             throw new ItemException();
+
+        double valor = 0;
+        try{  
+            valor = Double.parseDouble(info[1]); 
+        } 
+        catch(NumberFormatException e){ 
+            throw new ItemException("Valor incorreto");
+        }   
         
         String nome = info[0];
 
         if(existeItem(nome) != null)
             throw new ItemException("Item já existe");
         
-        Item i = new Item(nome);
+        Item i = new Item(nome, valor);
         this.itens.add(i);
         
         try {
-            this.repositorioItem.salvarItens(this.itens);
+            this.repositorioItem.salvar("itens", this.itens);
             System.out.println(i + " foi adicionado");
         } catch(PersistenciaException e) {
             throw new ErroInternoException("Erro interno ao tentar adicionar usuário. Por favor, entre em contato com o administrador");
@@ -58,7 +69,7 @@ public class GerenteItem{
         
         try {
             this.itens.remove(item);
-            this.repositorioItem.salvarItens(this.itens);
+            this.repositorioItem.salvar("itens", this.itens);
             System.out.println(item + " foi removido");
         } catch (PersistenciaException exception) {
             throw new ErroInternoException("Erro interno ao tentar remover item. Por favor, entre em contato com o administrador");
@@ -77,7 +88,7 @@ public class GerenteItem{
     }
 
     public void listarTodos(){
-        System.out.println("\nUsuários:");
+        System.out.println("\nItens:");
         for(Item item : this.itens)
             System.out.println(item);
         System.out.println();    
@@ -85,7 +96,7 @@ public class GerenteItem{
 
     public void encerrar() throws ErroInternoException{        
         try {
-            this.repositorioItem.salvarItens(this.itens);
+            this.repositorioItem.salvar("itens", this.itens);
         } catch (PersistenciaException e) {
             throw new ErroInternoException("Erro interno durante o encerramento com possíveis perdas de dados. Por favor, entre em contato com o administrador");
         }
@@ -102,8 +113,13 @@ public class GerenteItem{
     	return this.itens;
     }
 
-    public Item getItem(String nome){
-    	return existeItem(nome);
+    public Item getItem(String nome) throws ItemException{
+    	Item item = existeItem(nome);
+        
+        if(item == null)
+            throw new ItemException("Item não existe");
+    	
+        return item;
     }
 
     public static GerenteItem getGerente(){

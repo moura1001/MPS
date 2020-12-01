@@ -24,18 +24,21 @@ public class TelaInicial{
                 "Listar todos os usuários por ordem data de nascimento",
                 "Adicionar pedido",
                 "Remover pedido",
-                "Lista todos pedidos",
+                "Listar todos os pedidos",
                 "Adicionar item",
                 "Remover item",
-                "Lista todos itens",
+                "Listar todos os itens",
                 "Gerar relatório HTML",
                 "Gerar relatório TXT",
                 "Login com conta Google",
-                "Encerrar programa"
+                "Encerrar programa\n"
         };
 
-        for (int i = 1; i < acoes.length; i++) {
-            System.out.println(String.valueOf(i) + ": " + acoes[i]);
+        for (int i = 0; i < acoes.length; i++) {
+            if(i == 0)
+                System.out.println("\n");
+            else
+                System.out.println(String.valueOf(i) + ": " + acoes[i]);
         }
 
 
@@ -73,7 +76,7 @@ public class TelaInicial{
             case "5":
                 System.out.println("\nDigite login:");
                 input = scanner.nextLine();
-                sistema.adicionarPedido(input);
+                sistema.adicionarNoPedido(input);
                 break;
 
             case "6":
@@ -88,7 +91,7 @@ public class TelaInicial{
                 break;
 
             case "8":
-                System.out.println("\nDigite nome do item:");
+                System.out.println("\nDigite nome e valor do item:");
                 input = scanner.nextLine();
                 sistema.adicionarItem(input);
                 break;

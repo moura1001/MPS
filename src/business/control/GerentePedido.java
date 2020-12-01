@@ -24,14 +24,27 @@ public class GerentePedido {
         this.usuarios = usuarios;        
     }
 
-    public void adicionar(Item[] itens, double valor, String login) {
-        System.out.println("PEDIDO CADASTRADO");
-        for (Usuario usuario : usuarios)
-            if (usuario.getLogin().equals(login))
-                usuario.getPedidos().add(new Pedido(itens, valor));
+    public void adicionar(Item item, String login){
 
+        Usuario usuario = null;
+        try{
+            usuario = GerenteUsuario.getGerente().getUsuario(login);
+
+        } catch(LoginUsuarioException e){
+            System.out.println(e.getMessage());
+            return;
+        }
+        
+        if(usuario.getPedido() == null)
+        	usuario.setPedido(new Pedido());
+        
+        Pedido pedido = usuario.getPedido();
+        pedido.getItens().add(item);
+        pedido.setValorTotal(pedido.getValor() + item.getValor());
+        System.out.println("PEDIDO CADASTRADO");
+        
         try {
-            this.repositorio.salvarUsuarios(usuarios);
+            this.repositorio.salvar("usuarios", this.usuarios);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -40,35 +53,65 @@ public class GerentePedido {
     public void listarTodos() {
         for (Usuario usuario : usuarios) {
             System.out.print("# ");
-            ArrayList<Pedido> pedidos = usuario.getPedidos();
-            for (int i = 0; i < pedidos.size(); i++) {
-                System.out.print("item: " + String.join(" ", Arrays.toString(pedidos.get(i).getItens())) + " ");
-                System.out.print("valor: " + pedidos.get(i).getValor() + " ");
+            Pedido pedido = usuario.getPedido();
+            if(pedido == null)
+                break;
+            for(Item item : pedido.getItens()){
+                System.out.print("item: " + item + " ");
+                System.out.print("valor: " + item.getValor() + " ");
             }
             System.out.println();
         }
         System.out.println("\n");
     }
 
-    public void removerPedido(String login, String item) {
-        for (Usuario usuario : usuarios) {
-            if (usuario.getLogin().equals(login)) {
-                ArrayList<Pedido> pedidos = usuario.getPedidos();
-                for (Pedido pedido: pedidos) {
-                    if (pedido.getItens().length > 0 && pedido.getItens()[0].getNome().equals(item)) {
-                        pedidos.remove(pedido);
-                        break;
-                    }
-                }
-            }
+    public void removerPedido(String login) {
+
+        Usuario usuario = null;
+        try{
+            usuario = GerenteUsuario.getGerente().getUsuario(login);
+
+        } catch(LoginUsuarioException e){
+            System.out.println(e.getMessage());
+            return;
         }
 
+        usuario.setPedido(null);
+
         try {
-            this.repositorio.salvarUsuarios(usuarios);
+            this.repositorio.salvar("usuarios", this.usuarios);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
+    }
+
+    public void removerItemDoPedido(String login, String item) {
+
+        Usuario usuario = null;
+        try{
+            usuario = GerenteUsuario.getGerente().getUsuario(login);
+
+        } catch(LoginUsuarioException e){
+            System.out.println(e.getMessage());
+            return;
+        }
+
+        Pedido pedido = usuario.getPedido();
+        if (pedido.getItens().size() > 0){
+            for (Item i: pedido.getItens()) {
+                if (i.getNome().equals(item)) {
+                    pedido.getItens().remove(i);
+                    break;
+                }
+            }
+        }
+        
+        try {
+            this.repositorio.salvar("usuarios", this.usuarios);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
     }
 

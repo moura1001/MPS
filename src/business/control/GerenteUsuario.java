@@ -21,7 +21,9 @@ public class GerenteUsuario implements IGerente{
     private GerenteUsuario() throws ErroInternoException{
         try{
             this.repositorioUsuario = FabricaGerentePersistencia.obterGerentePersistencia("arquivo");
-            this.usuarios = this.repositorioUsuario.carregarUsuarios();
+            this.usuarios = (TreeSet<Usuario>) this.repositorioUsuario.carregar("usuarios");
+            if(this.usuarios == null)
+                this.usuarios = new TreeSet<Usuario>();
         } catch(PersistenciaException e){
             throw new ErroInternoException("Erro interno durante a inicialização. Por favor, entre em contato com o administrador");
         }        
@@ -59,7 +61,7 @@ public class GerenteUsuario implements IGerente{
         if(!senha.matches("(.*\\d.*){2,}"))
             throw new SenhaUsuarioException("Senha deve conter pelo menos 2 números");
         
-        //if(!data.matches("[0-3][0-9]/[0-9]{2}/[1-9]{4}"))
+        //if(!data.matches("[0-3][0-9]/[0-9]{2}/[0-9]{4}"))
         //    throw new DataUsuarioException("Data de nascimento deve seguir o formato DD/MM/AAAA");
         
         //int dia = Integer.parseInt(data.split("/")[0]);
@@ -70,7 +72,7 @@ public class GerenteUsuario implements IGerente{
         this.usuarios.add(u);
         
         try {
-            this.repositorioUsuario.salvarUsuarios(this.usuarios);
+            this.repositorioUsuario.salvar("usuarios", this.usuarios);
             System.out.println(u + " foi adicionado");
         } catch(PersistenciaException e) {
             throw new ErroInternoException("Erro interno ao tentar adicionar usuário. Por favor, entre em contato com o administrador");
@@ -86,7 +88,7 @@ public class GerenteUsuario implements IGerente{
         
         try {
             this.usuarios.remove(usuario);
-            this.repositorioUsuario.salvarUsuarios(this.usuarios);
+            this.repositorioUsuario.salvar("usuarios", this.usuarios);
             System.out.println(usuario + " foi removido");
         } catch (PersistenciaException exception) {
             throw new ErroInternoException("Erro interno ao tentar remover usuário. Por favor, entre em contato com o administrador");
@@ -125,7 +127,7 @@ public class GerenteUsuario implements IGerente{
 
     public void encerrar() throws ErroInternoException{        
         try {
-            this.repositorioUsuario.salvarUsuarios(this.usuarios);
+            this.repositorioUsuario.salvar("usuarios", this.usuarios);
         } catch (PersistenciaException e) {
             throw new ErroInternoException("Erro interno durante o encerramento com possíveis perdas de dados. Por favor, entre em contato com o administrador");
         }
@@ -140,6 +142,15 @@ public class GerenteUsuario implements IGerente{
 
     public TreeSet<Usuario> getUsuarios(){
     	return this.usuarios;
+    }
+
+    public Usuario getUsuario(String login) throws LoginUsuarioException{
+        Usuario usuario = existeUsuario(login);
+        
+        if(usuario == null)
+            throw new LoginUsuarioException("Login não existe");
+    	
+        return usuario;
     }
 
     public static GerenteUsuario getGerente(){

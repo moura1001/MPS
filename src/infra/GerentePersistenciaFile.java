@@ -2,26 +2,21 @@ package infra;
 
 import java.io.*;
 import java.util.TreeSet;
-import business.model.Item;
-import business.model.Usuario;
-import business.model.Data;
-import business.model.Pedido;
-import java.util.ArrayList;
 import java.util.*;
 import util.PersistenciaException;
 
 public class GerentePersistenciaFile implements GerentePersistencia{
-    private String arquivoUsuarios = "usuarios";
-    private String arquivoItens = "itens";
+    //private String arquivoUsuarios = "usuarios";
+    //private String arquivoItens = "itens";
 
-    public TreeSet<Usuario> carregarUsuarios() throws PersistenciaException{
-        TreeSet<Usuario> usuarios = new TreeSet<Usuario>();
+    public TreeSet<?> carregar(String nomeArquivo) throws PersistenciaException{
+        TreeSet<?> dados = null;
         try{
             
-        	FileInputStream fis = new FileInputStream(arquivoUsuarios);
+        	FileInputStream fis = new FileInputStream(nomeArquivo);
             ObjectInputStream ois = new ObjectInputStream(fis);
  
-            usuarios = (TreeSet<Usuario>) ois.readObject();
+            dados = (TreeSet<?>) ois.readObject();
  
             ois.close();
             fis.close();
@@ -30,16 +25,16 @@ public class GerentePersistenciaFile implements GerentePersistencia{
             throw new PersistenciaException("Erro ao carregar arquivo.");
         }
 
-        return usuarios;
+        return dados;
     }
 
-    public void salvarUsuarios(TreeSet<Usuario> usuarios) throws PersistenciaException {
+    public void salvar(String nomeArquivo, TreeSet<?> dados) throws PersistenciaException {
         try {
         	
-        	FileOutputStream fos = new FileOutputStream(arquivoUsuarios);
+        	FileOutputStream fos = new FileOutputStream(nomeArquivo);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             
-            oos.writeObject(usuarios);
+            oos.writeObject(dados);
             
             oos.close();
             fos.close();
@@ -48,40 +43,4 @@ public class GerentePersistenciaFile implements GerentePersistencia{
             throw new PersistenciaException("Erro ao salvar arquivo.");
         }
     }
-
-    public TreeSet<Item> carregarItens() throws PersistenciaException{
-        TreeSet<Item> itens = new TreeSet<Item>();
-        try{
-            
-        	FileInputStream fis = new FileInputStream(arquivoItens);
-            ObjectInputStream ois = new ObjectInputStream(fis);
- 
-            itens = (TreeSet<Item>) ois.readObject();
- 
-            ois.close();
-            fis.close();
-        	
-        } catch (IOException | ClassNotFoundException e) {
-            throw new PersistenciaException("Erro ao carregar arquivo.");
-        }
-
-        return itens;
-    }
-
-    public void salvarItens(TreeSet<Item> itens) throws PersistenciaException {
-        try {
-        	
-        	FileOutputStream fos = new FileOutputStream(arquivoItens);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            
-            oos.writeObject(itens);
-            
-            oos.close();
-            fos.close();
-        	
-        } catch(IOException e) {
-            throw new PersistenciaException("Erro ao salvar arquivo.");
-        }
-    }
-
 }
