@@ -9,14 +9,14 @@ import util.PagamentoException;
 
 public class ComandoPagamentoAdicionar implements ComandoPagamento{
 
-    public void executar(String arg) throws PagamentoException{
+    public void executar(Object[] arg) throws PagamentoException{
 
-        HashMap pagamentos =  GerentePagamento.getGerente().getPagamentos();
+        HashMap pagamentos =  (HashMap) arg[1];
         
-        if(arg == null)
+        if(arg[0] == null)
             throw new PagamentoException();
 
-        String[] info = arg.split("[\\t ]");
+        String[] info = ((String) arg[0]).split("[\\t ]");
 
         if(info.length != 2)
             throw new PagamentoException();
@@ -39,6 +39,8 @@ public class ComandoPagamentoAdicionar implements ComandoPagamento{
             return;
         }
 
+        ((PagamentoCareTaker) arg[2]).limparEstadosSalvos();
+        
         ArrayList<Pagamento> pValue = null;
         int idPagamento = -1;
         Pagamento p = null;

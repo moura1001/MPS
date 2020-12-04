@@ -44,9 +44,13 @@ public class Pagamento implements Serializable{
     } 
 
     public String toString(){
-        return "Pagamento: " + Integer.toString(idPagamento) + 
+        return "ID Pagamento: " + Integer.toString(idPagamento) + 
                 "\n" + usuario +
                 "\n" + "Valor: " + Double.toString(valor) +
                 "\n" + "Foma de pagamento: " + formaDePagamento;
+    }
+    
+    public Pagamento getCopia(){
+    	return new Pagamento(this.idPagamento, this.usuario, this.valor);
     }
 }

@@ -5,17 +5,18 @@ import java.util.ArrayList;
 import business.model.Pagamento;
 import business.model.Usuario;
 import util.PagamentoException;
-import java.lang.NumberFormatException;
 
 public class GerentePagamento{
 
     private static GerentePagamento gerente;
     private HashMap<Usuario, ArrayList<Pagamento>> pagamentos;
     private HashMap comandos;
+    PagamentoCareTaker caretaker;
 
     private GerentePagamento(){
         this.pagamentos = new HashMap<Usuario, ArrayList<Pagamento>>();
         comandos = new HashMap();
+        caretaker = new PagamentoCareTaker();
         iniciarComandos();            
     }
 
@@ -26,18 +27,32 @@ public class GerentePagamento{
     }
 
 	public void service(String comando, String pagamento) {
-
-        ComandoPagamento c = (ComandoPagamento) comandos.get(comando);
+		
+		ComandoPagamento c = (ComandoPagamento) comandos.get(comando);
+		
+		Object[] o = new Object[3];
+		o[0] = pagamento;
+		o[1] = this.pagamentos;
+		o[2] = this.caretaker;
 
         try {
-            c.executar(pagamento);
+            c.executar(o);
         } catch (PagamentoException e) {
             System.out.println(e.getMessage());
         }        
     }
-
-    public HashMap<Usuario, ArrayList<Pagamento>> getPagamentos(){
-    	return this.pagamentos;
+    
+    public void desfazerAtualizacao(){
+    	
+    	PagamentoMemento estado = caretaker.getUltimoEstadoSalvo();
+    	
+    	if(estado == null){
+    		System.out.println("\nNão há nenhuma atualização para ser desfeita.");
+    		return;
+    	}
+    	
+    	this.pagamentos = estado.getPagamentoSalvo();
+    	System.out.println("\nAtualização desfeita.");
     }
 
     public static GerentePagamento getGerente(){

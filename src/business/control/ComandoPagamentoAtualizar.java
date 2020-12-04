@@ -2,6 +2,8 @@ package business.control;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+
 import business.model.Pagamento;
 import business.model.Usuario;
 import util.LoginUsuarioException;
@@ -9,14 +11,14 @@ import util.PagamentoException;
 
 public class ComandoPagamentoAtualizar implements ComandoPagamento{
 
-    public void executar(String arg) throws PagamentoException{
+    public void executar(Object[] arg) throws PagamentoException{
         
-        HashMap pagamentos =  GerentePagamento.getGerente().getPagamentos();
+        HashMap<Usuario, ArrayList<Pagamento>> pagamentos =  (HashMap) arg[1];
         
-        if(arg == null)
+        if(arg[0] == null)
             throw new PagamentoException();
 
-        String[] info = arg.split("[\\t ]");
+        String[] info = ((String) arg[0]).split("[\\t ]");
 
         if(info.length != 3)
             throw new PagamentoException("Pagamento não encontrado por consulta incorreta");
@@ -54,10 +56,30 @@ public class ComandoPagamentoAtualizar implements ComandoPagamento{
             throw new PagamentoException("Usuário não realizou nenhum pagamento");
         
         } else{
-            pValue = (ArrayList<Pagamento>) pagamentos.get(usuario);
-            if(pValue != null && idPagamento >= 0 && idPagamento <= pValue.size()){
+        	
+        	pValue = (ArrayList<Pagamento>) pagamentos.get(usuario);
+            
+        	if(pValue != null && idPagamento >= 0 && idPagamento <= pValue.size()){
+            	
+            	// Cópia profunda
+        		HashMap<Usuario, ArrayList<Pagamento>> copiaPagamentos = new HashMap<Usuario, ArrayList<Pagamento>>();
+        		
+        		for (Map.Entry<Usuario, ArrayList<Pagamento>> entry : pagamentos.entrySet()){
+        			
+        			ArrayList<Pagamento> copiaPagamento = new ArrayList<Pagamento>();
+        			
+        			for(Pagamento pagamento : entry.getValue())
+        				copiaPagamento.add(pagamento.getCopia());
+        			
+        			
+        			pagamentos.put(entry.getKey(), copiaPagamento);
+        	    }
+    			
+        		// Salvando estado anterior
+        		((PagamentoCareTaker) arg[2]).adicionarMemento(new PagamentoMemento(pagamentos));
 
-                p = pValue.get(idPagamento - 1); 
+        		// Atualização
+        		p = pValue.get(idPagamento - 1); 
                 p.setValor(valor) ;
 
             } else
