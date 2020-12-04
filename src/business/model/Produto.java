@@ -2,11 +2,11 @@ package business.model;
 
 import java.io.Serializable;
 
-public class Item implements Comparable<Item>, Serializable{
+public class Produto implements Comparable<Produto>, Serializable{
     private String nome;
     private double valor;
     
-    public Item(String nome, double valor){
+    public Produto(String nome, double valor){
         this.nome = nome;
         this.valor = valor;
     }
@@ -15,12 +15,12 @@ public class Item implements Comparable<Item>, Serializable{
         return nome;
     }
     
-    public int compareTo(Item item){
-        return this.nome.compareTo(item.nome);
+    public int compareTo(Produto produto){
+        return this.nome.compareTo(produto.nome);
     }
 
     public String toString(){
-        return "Item: " + this.nome;
+        return "Produto: " + this.nome;
     }
 
     public double getValor(){

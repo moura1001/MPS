@@ -6,9 +6,7 @@ import java.util.*;
 import util.PersistenciaException;
 
 public class GerentePersistenciaFile implements GerentePersistencia{
-    //private String arquivoUsuarios = "usuarios";
-    //private String arquivoItens = "itens";
-
+    
     public TreeSet<?> carregar(String nomeArquivo) throws PersistenciaException{
         TreeSet<?> dados = null;
         try{

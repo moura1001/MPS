@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.*;
 import java.util.Scanner;
 
 import business.control.Sistema;
@@ -28,13 +27,13 @@ public class TelaInicial{
                 "Adicionar pedido",
                 "Remover pedido",
                 "Listar todos os pedidos",
-                "Adicionar item",
-                "Remover item",
-                "Listar todos os itens",
+                "Adicionar produto",
+                "Remover produto",
+                "Listar todos os produtos",
                 "Adicionar pagamento",
                 "Atualizar pagamento",
                 "Buscar pagamento",
-                //"Desfazer alteração no pagamento",
+                "Desfazer atualização de pagamento",
                 "Gerar relatório HTML",
                 "Gerar relatório TXT",
                 "Login com conta Google",
@@ -98,20 +97,20 @@ public class TelaInicial{
                 break;
 
             case "8":
-                System.out.println("\nDigite nome e valor do item:");
+                System.out.println("\nDigite nome e valor do produto:");
                 input = scanner.nextLine();
-                sistema.adicionarItem(input);
+                sistema.adicionarProduto(input);
                 break;
 
             case "9":
-                System.out.println("\nDigite nome do item:");
+                System.out.println("\nDigite nome do produto:");
                 input = scanner.nextLine();
-                sistema.removerItem(input);
+                sistema.removerProduto(input);
                 break;
 
             case "10":
-                System.out.println("\nTodos os itens:");
-                sistema.listarItens();
+                System.out.println("\nTodos os produtos:");
+                sistema.listarProdutos();
                 break;    
 
             case "11":
@@ -131,24 +130,29 @@ public class TelaInicial{
                 input = scanner.nextLine();
                 gerentePagamento.service("buscar", input);
                 break;
-            
+                
             case "14":
+                gerentePagamento.desfazerAtualizacao();
+                break;   
+            
+            case "15":
                 sistema.gerarRelatorio(FabricaGeradorRelatorio.obterGeradorRelatorio("html"));
                 break;
             
-            case "15":
+            case "16":
                 sistema.gerarRelatorio(FabricaGeradorRelatorio.obterGeradorRelatorio("txt"));
                 break;
             
-            case "16":
+            case "17":
                 System.out.println("\nDigite login e senha do Google:");
                 input = scanner.nextLine();
                 sistema.login(input, FabricaAdaptadorAutenticador.obterAdaptadorAutenticador("google"));
                 break;
             
-            case "17":
+            case "18":
                 input = null;
                 sistema.encerrarPrograma();
+                System.out.println("\nAplicação encerrada");
                 break;
 
             default:

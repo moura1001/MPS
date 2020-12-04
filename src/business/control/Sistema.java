@@ -3,10 +3,10 @@ package business.control;
 import util.AdicaoUsuarioException;
 import util.ErroInternoException;
 import util.LoginUsuarioException;
-import util.ItemException;
+import util.ProdutoException;
 import business.report.GeradorRelatorio;
 import business.authentication.AdaptadorAutenticador;
-import business.model.Item;
+import business.model.Produto;
 import java.util.Scanner;
 
 public class Sistema {
@@ -14,13 +14,13 @@ public class Sistema {
     private static Sistema sistema;
     GerenteUsuario gerenteUsuario;
     GerentePedido gerentePedido;
-    GerenteItem gerenteItem;
+    GerenteProduto gerenteProduto;
     private int numeroAcessosUsuarios;
 
     private Sistema() {
         this.gerenteUsuario = GerenteUsuario.getGerente();
         this.gerentePedido = GerentePedido.getGerente();
-        this.gerenteItem = GerenteItem.getGerente();
+        this.gerenteProduto = GerenteProduto.getGerente();
         this.numeroAcessosUsuarios = 0;
     }
 
@@ -67,24 +67,24 @@ public class Sistema {
 
     public void adicionarNoPedido(String login) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Escolha 1 item: ");
+        System.out.println("Escolha 1 produto: ");
         String input = scanner.nextLine();
-        Item item = null;
+        Produto produto = null;
         try{
-            item = GerenteItem.getGerente().getItem(input.split(" ")[0]);
+            produto = GerenteProduto.getGerente().getProduto(input.split(" ")[0]);
 
-        } catch(ItemException e){
+        } catch(ProdutoException e){
             System.out.println(e.getMessage());
             return;
         }
-        gerentePedido.adicionar(item, login);
+        gerentePedido.adicionar(produto, login);
     }
 
     public void removerDoPedido(String login) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Escolha o item a ser removido: ");
+        System.out.println("Escolha o produto a ser removido: ");
         String input = scanner.nextLine();
-        gerentePedido.removerItemDoPedido(login, input);
+        gerentePedido.removerProdutoDoPedido(login, input);
     }
 
     public void removerPedido(String login) {
@@ -95,12 +95,12 @@ public class Sistema {
         gerentePedido.listarTodos();
     }
 
-    public void adicionarItem(String item){
+    public void adicionarProduto(String produto){
 
         try{
-            gerenteItem.adicionar(item);
+            gerenteProduto.adicionar(produto);
 
-        } catch(ItemException e){
+        } catch(ProdutoException e){
             System.out.println(e.getMessage());
 
         } catch(ErroInternoException e){
@@ -108,11 +108,11 @@ public class Sistema {
         }
     }
 
-    public void removerItem(String nome) {
+    public void removerProduto(String nome) {
         try{
-            gerenteItem.remover(nome);
+            gerenteProduto.remover(nome);
 
-        } catch(ItemException e){
+        } catch(ProdutoException e){
             System.out.println(e.getMessage());
 
         } catch(ErroInternoException e){
@@ -120,8 +120,8 @@ public class Sistema {
         }
     }
 
-    public void listarItens() {
-        gerenteItem.listarTodos();
+    public void listarProdutos() {
+        gerenteProduto.listarTodos();
     }
 
     public void gerarRelatorio(GeradorRelatorio geradorRelatorio){
@@ -157,7 +157,7 @@ public class Sistema {
     public void encerrarPrograma(){
         try{
             gerenteUsuario.encerrar();
-            gerenteItem.encerrar();
+            gerenteProduto.encerrar();
         } catch(ErroInternoException e){
             System.out.println(e.getMessage());
         }

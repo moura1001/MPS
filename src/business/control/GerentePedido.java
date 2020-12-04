@@ -1,15 +1,12 @@
 package business.control;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.TreeSet;
 
 import business.model.Pedido;
 import business.model.Usuario;
-import business.model.Item;
+import business.model.Produto;
 import util.LoginUsuarioException;
 import util.PersistenciaException;
-import util.ErroInternoException;
 import infra.GerentePersistencia;
 import infra.FabricaGerentePersistencia;
 
@@ -24,7 +21,7 @@ public class GerentePedido {
         this.usuarios = usuarios;        
     }
 
-    public void adicionar(Item item, String login){
+    public void adicionar(Produto produto, String login){
 
         Usuario usuario = null;
         try{
@@ -39,13 +36,13 @@ public class GerentePedido {
         	usuario.setPedido(new Pedido());
         
         Pedido pedido = usuario.getPedido();
-        pedido.getItens().add(item);
-        pedido.setValorTotal(pedido.getValor() + item.getValor());
+        pedido.getProdutos().add(produto);
+        pedido.setValorTotal(pedido.getValor() + produto.getValor());
         System.out.println("PEDIDO CADASTRADO");
         
         try {
             this.repositorio.salvar("usuarios", this.usuarios);
-        } catch (Exception e) {
+        } catch (PersistenciaException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -56,9 +53,9 @@ public class GerentePedido {
             Pedido pedido = usuario.getPedido();
             if(pedido == null)
                 break;
-            for(Item item : pedido.getItens()){
-                System.out.print("item: " + item + " ");
-                System.out.print("valor: " + item.getValor() + " ");
+            for(Produto produto : pedido.getProdutos()){
+                System.out.print("produto: " + produto + " ");
+                System.out.print("valor: " + produto.getValor() + " ");
             }
             System.out.println();
         }
@@ -86,7 +83,7 @@ public class GerentePedido {
 
     }
 
-    public void removerItemDoPedido(String login, String item) {
+    public void removerProdutoDoPedido(String login, String produto) {
 
         Usuario usuario = null;
         try{
@@ -98,10 +95,10 @@ public class GerentePedido {
         }
 
         Pedido pedido = usuario.getPedido();
-        if (pedido.getItens().size() > 0){
-            for (Item i: pedido.getItens()) {
-                if (i.getNome().equals(item)) {
-                    pedido.getItens().remove(i);
+        if (pedido.getProdutos().size() > 0){
+            for (Produto i: pedido.getProdutos()) {
+                if (i.getNome().equals(produto)) {
+                    pedido.getProdutos().remove(i);
                     break;
                 }
             }

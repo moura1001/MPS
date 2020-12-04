@@ -4,21 +4,21 @@ import java.io.Serializable;
 import java.util.TreeSet;
 
 public class Pedido implements Serializable{
-    private TreeSet<Item> itens;
+    private TreeSet<Produto> produtos;
     private double valorTotal;
     
     public Pedido() {
-        this.itens = new TreeSet<Item>();
+        this.produtos = new TreeSet<Produto>();
 	    this.valorTotal = 0;
     }
 
-    public Pedido(TreeSet<Item> itens, double valorTotal) {
-        this.itens = itens;
+    public Pedido(TreeSet<Produto> produtos, double valorTotal) {
+        this.produtos = produtos;
         this.valorTotal = valorTotal;
     }
     
-    public TreeSet<Item> getItens(){
-        return this.itens;
+    public TreeSet<Produto> getProdutos(){
+        return this.produtos;
     }
     
     public double getValor() {
