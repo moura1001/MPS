@@ -7,18 +7,18 @@ public class Pagamento implements Serializable{
     private int idPagamento;
     private double valor;
     private String formaDePagamento;
-    private Usuario usuario;
+    private Entregador entregador;
     
-    public Pagamento(int idPagamento, Usuario usuario, double valor) {
+    public Pagamento(int idPagamento, Entregador entregador, double valor) {
         this.idPagamento = idPagamento;
-        this.usuario = usuario;
+        this.entregador = entregador;
         this.valor = valor;
         this.formaDePagamento = "Dinheiro";        
     }
 
-    public Pagamento(int idPagamento, Usuario usuario, double valor, String formaDePagamento) {
+    public Pagamento(int idPagamento, Entregador entregador, double valor, String formaDePagamento) {
         this.idPagamento = idPagamento;
-        this.usuario = usuario;
+        this.entregador = entregador;
         this.valor = valor;
         this.formaDePagamento = formaDePagamento;
     }
@@ -39,18 +39,18 @@ public class Pagamento implements Serializable{
         this.valor = valor;
     }
 
-    public Usuario getUsuario(){
-        return this.usuario;
+    public Entregador getEntregador(){
+        return this.entregador;
     } 
 
     public String toString(){
         return "ID Pagamento: " + Integer.toString(idPagamento) + 
-                "\n" + usuario +
+                "\n" + entregador +
                 "\n" + "Valor: " + Double.toString(valor) +
                 "\n" + "Foma de pagamento: " + formaDePagamento;
     }
     
     public Pagamento getCopia(){
-    	return new Pagamento(this.idPagamento, this.usuario, this.valor);
+    	return new Pagamento(this.idPagamento, this.entregador, this.valor);
     }
 }

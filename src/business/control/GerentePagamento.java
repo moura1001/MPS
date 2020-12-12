@@ -3,18 +3,18 @@ package business.control;
 import java.util.HashMap;
 import java.util.ArrayList;
 import business.model.Pagamento;
-import business.model.Usuario;
+import business.model.Entregador;
 import util.PagamentoException;
 
 public class GerentePagamento{
 
     private static GerentePagamento gerente;
-    private HashMap<Usuario, ArrayList<Pagamento>> pagamentos;
+    private HashMap<Entregador, ArrayList<Pagamento>> pagamentos;
     private HashMap comandos;
     PagamentoCareTaker caretaker;
 
     private GerentePagamento(){
-        this.pagamentos = new HashMap<Usuario, ArrayList<Pagamento>>();
+        this.pagamentos = new HashMap<Entregador, ArrayList<Pagamento>>();
         comandos = new HashMap();
         caretaker = new PagamentoCareTaker();
         iniciarComandos();            

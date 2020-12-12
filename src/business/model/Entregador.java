@@ -4,7 +4,7 @@ import business.model.ListaDeCompra;
 import java.lang.Comparable;
 import java.io.Serializable;
 
-public class Usuario implements Comparable<Usuario>, Serializable{
+public class Entregador implements Comparable<Entregador>, Serializable{
 
     private String login;
     private String senha;
@@ -12,25 +12,25 @@ public class Usuario implements Comparable<Usuario>, Serializable{
     
     private ListaDeCompra listaDeCompra;
 
-    public Usuario(String login, String senha){
+    public Entregador(String login, String senha){
         this.login = login;
         this.senha = senha;
         dataNascimento = new Data();
     }
 
-    public Usuario(String login, String senha, Data data, ListaDeCompra listaDeCompra){
+    public Entregador(String login, String senha, Data data, ListaDeCompra listaDeCompra){
         this.login = login;
         this.senha = senha;
         this.dataNascimento = data;
         this.listaDeCompra = listaDeCompra;
     }
 
-    public int compareTo(Usuario usuario){
-        return this.login.compareTo(usuario.login);
+    public int compareTo(Entregador entregador){
+        return this.login.compareTo(entregador.login);
     }
 
     public String toString(){
-        return "Usuário: " + this.login;
+        return "Entregador: " + this.login;
     }
 
     public String getLogin(){

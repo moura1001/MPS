@@ -3,8 +3,8 @@ package business.control;
 import java.util.ArrayList;
 import java.util.HashMap;
 import business.model.Pagamento;
-import business.model.Usuario;
-import util.LoginUsuarioException;
+import business.model.Entregador;
+import util.LoginEntregadorException;
 import util.PagamentoException;
 
 public class ComandoPagamentoBuscar implements ComandoPagamento{
@@ -22,11 +22,11 @@ public class ComandoPagamentoBuscar implements ComandoPagamento{
             throw new PagamentoException("Pagamento não encontrado por consulta incorreta");
 
         String login = info[0];
-        Usuario usuario = null;
+        Entregador entregador = null;
         try{
-            usuario = GerenteUsuario.getGerente().getUsuario(login);
+            entregador = GerenteEntregador.getGerente().getEntregador(login);
 
-        } catch(LoginUsuarioException e){
+        } catch(LoginEntregadorException e){
             System.out.println(e.getMessage());
             return;
         }
@@ -39,11 +39,11 @@ public class ComandoPagamentoBuscar implements ComandoPagamento{
             throw new PagamentoException("Pagamento não encontrado por consulta incorreta");
         }
 
-        if(!pagamentos.containsKey(usuario)){
+        if(!pagamentos.containsKey(entregador)){
             throw new PagamentoException("Usuário não realizou nenhum pagamento");
         
         } else{
-            ArrayList<Pagamento> pValue = (ArrayList<Pagamento>) pagamentos.get(usuario);
+            ArrayList<Pagamento> pValue = (ArrayList<Pagamento>) pagamentos.get(entregador);
             if(pValue != null && idPagamento >= 0 && idPagamento <= pValue.size()){
 
                 Pagamento p = pValue.get(idPagamento - 1);                

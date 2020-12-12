@@ -1,14 +1,14 @@
 package business.report;
 
 import business.control.Sistema;
-import business.control.GerenteUsuario;
+import business.control.GerenteEntregador;
 import business.control.GerentePedido;
 
 public abstract class GeradorRelatorio{
 
     //atributes
-    protected int usuariosCadastrados;
-    protected int acessosUsuarios;
+    protected int entregadoresCadastrados;
+    protected int acessosEntregadores;
     protected String textoRelatorio;
 
     // Template Method
@@ -22,12 +22,12 @@ public abstract class GeradorRelatorio{
 
     public void adquirirDados(){
         // Adquirir os dados para fazer o relatorio   
-        GerenteUsuario gerenteUsuario = GerenteUsuario.getGerente();
+        GerenteEntregador gerenteEntregador = GerenteEntregador.getGerente();
 		GerentePedido gerentePedido = GerentePedido.getGerente();
 		Sistema sistema = Sistema.obterInstancia();    
         
-        this.usuariosCadastrados = gerenteUsuario.quantidadeUsuariosCadastrados();
-        this.acessosUsuarios = sistema.numeroAcessos();
+        this.entregadoresCadastrados = gerenteEntregador.quantidadeEntregadoresCadastrados();
+        this.acessosEntregadores = sistema.numeroAcessos();
     }
 
     /*
@@ -38,9 +38,9 @@ public abstract class GeradorRelatorio{
     */
 
     public void criarTextoRelatorio(){
-        if (this.usuariosCadastrados != 0){
-            this.textoRelatorio = "A quantidade de usuários cadastrados é igual a: " + Integer.toString(this.usuariosCadastrados);
-            this.textoRelatorio += "\nA quantidade de acessos é igual a: " + Integer.toString(this.acessosUsuarios);            
+        if (this.entregadoresCadastrados != 0){
+            this.textoRelatorio = "A quantidade de usuários cadastrados é igual a: " + Integer.toString(this.entregadoresCadastrados);
+            this.textoRelatorio += "\nA quantidade de acessos é igual a: " + Integer.toString(this.acessosEntregadores);            
         
         } else{
             this.textoRelatorio = "Não há usuários cadastrados";

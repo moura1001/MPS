@@ -3,8 +3,8 @@ package business.control;
 import java.util.ArrayList;
 import java.util.HashMap;
 import business.model.Pagamento;
-import business.model.Usuario;
-import util.LoginUsuarioException;
+import business.model.Entregador;
+import util.LoginEntregadorException;
 import util.PagamentoException;
 
 public class ComandoPagamentoAdicionar implements ComandoPagamento{
@@ -30,11 +30,11 @@ public class ComandoPagamentoAdicionar implements ComandoPagamento{
         }   
         
         String login = info[0];
-        Usuario usuario = null;
+        Entregador entregador = null;
         try{
-            usuario = GerenteUsuario.getGerente().getUsuario(login);
+            entregador = GerenteEntregador.getGerente().getEntregador(login);
 
-        } catch(LoginUsuarioException e){
+        } catch(LoginEntregadorException e){
             System.out.println(e.getMessage());
             return;
         }
@@ -45,22 +45,22 @@ public class ComandoPagamentoAdicionar implements ComandoPagamento{
         int idPagamento = -1;
         Pagamento p = null;
         
-        if(!pagamentos.containsKey(usuario)){
+        if(!pagamentos.containsKey(entregador)){
             pValue = new ArrayList<Pagamento>();
             idPagamento = 1;
-            p = new Pagamento(idPagamento, usuario, valor);
+            p = new Pagamento(idPagamento, entregador, valor);
             pValue.add(p);
-            pagamentos.put(usuario, pValue);
+            pagamentos.put(entregador, pValue);
         
         } else{
-            pValue = (ArrayList<Pagamento>) pagamentos.get(usuario);
+            pValue = (ArrayList<Pagamento>) pagamentos.get(entregador);
             if(pValue == null)
                 pValue = new ArrayList<Pagamento>();
             
             idPagamento = pValue.size() + 1;
-            p = new Pagamento(idPagamento, usuario, valor);
+            p = new Pagamento(idPagamento, entregador, valor);
             pValue.add(p);
-            //pagamentos.put(usuario, pValue);
+            //pagamentos.put(entregador, pValue);
         }
 
         System.out.println("Pagamento adicionado:");

@@ -3,9 +3,9 @@ package business.control;
 import java.util.TreeSet;
 
 import business.model.ListaDeCompra;
-import business.model.Usuario;
+import business.model.Entregador;
 import business.model.Produto;
-import util.LoginUsuarioException;
+import util.LoginEntregadorException;
 import util.PersistenciaException;
 import infra.GerentePersistencia;
 import infra.FabricaGerentePersistencia;
@@ -13,44 +13,44 @@ import infra.FabricaGerentePersistencia;
 public class GerentePedido {
     
     private static GerentePedido gerente;
-    private TreeSet<Usuario> usuarios;
+    private TreeSet<Entregador> entregadores;
     private GerentePersistencia repositorio;
 
-    private GerentePedido(TreeSet<Usuario> usuarios) {
+    private GerentePedido(TreeSet<Entregador> entregadores) {
         this.repositorio = FabricaGerentePersistencia.obterGerentePersistencia("arquivo");
-        this.usuarios = usuarios;        
+        this.entregadores = entregadores;        
     }
 
     public void adicionar(Produto produto, String login){
 
-        Usuario usuario = null;
+        Entregador entregador = null;
         try{
-            usuario = GerenteUsuario.getGerente().getUsuario(login);
+            entregador = GerenteEntregador.getGerente().getEntregador(login);
 
-        } catch(LoginUsuarioException e){
+        } catch(LoginEntregadorException e){
             System.out.println(e.getMessage());
             return;
         }
         
-        if(usuario.getListaDeCompra() == null)
-        	usuario.setListaDeCompra(new ListaDeCompra());
+        if(entregador.getListaDeCompra() == null)
+        	entregador.setListaDeCompra(new ListaDeCompra());
         
-        ListaDeCompra listaDeCompra = usuario.getListaDeCompra();
+        ListaDeCompra listaDeCompra = entregador.getListaDeCompra();
         listaDeCompra.getProdutos().add(produto);
         listaDeCompra.setValorTotal(listaDeCompra.getValor() + produto.getValor());
         System.out.println("PEDIDO CADASTRADO");
         
         try {
-            this.repositorio.salvar("usuarios", this.usuarios);
+            this.repositorio.salvar("entregadores", this.entregadores);
         } catch (PersistenciaException e) {
             System.out.println(e.getMessage());
         }
     }
 
     public void listarTodos() {
-        for (Usuario usuario : usuarios) {
+        for (Entregador entregador : entregadores) {
             System.out.print("# ");
-            ListaDeCompra listaDeCompra = usuario.getListaDeCompra();
+            ListaDeCompra listaDeCompra = entregador.getListaDeCompra();
             if(listaDeCompra == null)
                 break;
             for(Produto produto : listaDeCompra.getProdutos()){
@@ -64,19 +64,19 @@ public class GerentePedido {
 
     public void removerPedido(String login) {
 
-        Usuario usuario = null;
+        Entregador entregador = null;
         try{
-            usuario = GerenteUsuario.getGerente().getUsuario(login);
+            entregador = GerenteEntregador.getGerente().getEntregador(login);
 
-        } catch(LoginUsuarioException e){
+        } catch(LoginEntregadorException e){
             System.out.println(e.getMessage());
             return;
         }
 
-        usuario.setListaDeCompra(null);
+        entregador.setListaDeCompra(null);
 
         try {
-            this.repositorio.salvar("usuarios", this.usuarios);
+            this.repositorio.salvar("entregadores", this.entregadores);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -85,16 +85,16 @@ public class GerentePedido {
 
     public void removerProdutoDoPedido(String login, String produto) {
 
-        Usuario usuario = null;
+        Entregador entregador = null;
         try{
-            usuario = GerenteUsuario.getGerente().getUsuario(login);
+            entregador = GerenteEntregador.getGerente().getEntregador(login);
 
-        } catch(LoginUsuarioException e){
+        } catch(LoginEntregadorException e){
             System.out.println(e.getMessage());
             return;
         }
 
-        ListaDeCompra listaDeCompra = usuario.getListaDeCompra();
+        ListaDeCompra listaDeCompra = entregador.getListaDeCompra();
         if (listaDeCompra.getProdutos().size() > 0){
             for (Produto i: listaDeCompra.getProdutos()) {
                 if (i.getNome().equals(produto)) {
@@ -105,7 +105,7 @@ public class GerentePedido {
         }
         
         try {
-            this.repositorio.salvar("usuarios", this.usuarios);
+            this.repositorio.salvar("entregadores", this.entregadores);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -114,7 +114,7 @@ public class GerentePedido {
 
     public static GerentePedido getGerente(){
         if(gerente == null)
-            gerente = new GerentePedido(GerenteUsuario.getGerente().getUsuarios());
+            gerente = new GerentePedido(GerenteEntregador.getGerente().getEntregadores());
 
         return gerente;    
     }
