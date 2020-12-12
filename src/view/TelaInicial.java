@@ -62,21 +62,21 @@ public class TelaInicial{
                 System.out.println("\nDigite login e senha:");
                 //System.out.println("\nDigite login, senha e data de nascimento:");
                 input = scanner.nextLine(); 
-                sistema.adicionarUsuario(input);
+                sistema.adicionarEntregador(input);
                 break; 
             
             case "2":
                 System.out.println("\nDigite login:");
                 input = scanner.nextLine(); 
-                sistema.excluirUsuario(input);
+                sistema.excluirEntregador(input);
                 break;
             
             case "3":
-                sistema.listarUsuarios1();
+                sistema.listarEntregadores1();
                 break;
 
             case "4":
-                sistema.listarUsuarios2();
+                sistema.listarEntregadores2();
                 break;    
             
             case "5":

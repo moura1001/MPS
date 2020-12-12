@@ -5,15 +5,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import business.model.Pagamento;
-import business.model.Usuario;
-import util.LoginUsuarioException;
+import business.model.Entregador;
+import util.LoginEntregadorException;
 import util.PagamentoException;
 
 public class ComandoPagamentoAtualizar implements ComandoPagamento{
 
     public void executar(Object[] arg) throws PagamentoException{
         
-        HashMap<Usuario, ArrayList<Pagamento>> pagamentos =  (HashMap) arg[1];
+        HashMap<Entregador, ArrayList<Pagamento>> pagamentos =  (HashMap) arg[1];
         
         if(arg[0] == null)
             throw new PagamentoException();
@@ -40,11 +40,11 @@ public class ComandoPagamentoAtualizar implements ComandoPagamento{
         }   
         
         String login = info[0];
-        Usuario usuario = null;
+        Entregador Entregador = null;
         try{
-            usuario = GerenteUsuario.getGerente().getUsuario(login);
+            Entregador = GerenteEntregador.getGerente().getEntregador(login);
 
-        } catch(LoginUsuarioException e){
+        } catch(LoginEntregadorException e){
             System.out.println(e.getMessage());
             return;
         }
@@ -52,19 +52,19 @@ public class ComandoPagamentoAtualizar implements ComandoPagamento{
         ArrayList<Pagamento> pValue = null;
         Pagamento p = null;
         
-        if(!pagamentos.containsKey(usuario)){
+        if(!pagamentos.containsKey(Entregador)){
             throw new PagamentoException("Usuário não realizou nenhum pagamento");
         
         } else{
         	
-        	pValue = (ArrayList<Pagamento>) pagamentos.get(usuario);
+        	pValue = (ArrayList<Pagamento>) pagamentos.get(Entregador);
             
         	if(pValue != null && idPagamento >= 0 && idPagamento <= pValue.size()){
             	
             	// Cópia profunda
-        		HashMap<Usuario, ArrayList<Pagamento>> copiaPagamentos = new HashMap<Usuario, ArrayList<Pagamento>>();
+        		HashMap<Entregador, ArrayList<Pagamento>> copiaPagamentos = new HashMap<Entregador, ArrayList<Pagamento>>();
         		
-        		for (Map.Entry<Usuario, ArrayList<Pagamento>> entry : pagamentos.entrySet()){
+        		for (Map.Entry<Entregador, ArrayList<Pagamento>> entry : pagamentos.entrySet()){
         			
         			ArrayList<Pagamento> copiaPagamento = new ArrayList<Pagamento>();
         			

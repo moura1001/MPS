@@ -1,13 +1,13 @@
 package business.control;
 
-import util.AdicaoUsuarioException;
-import util.LoginUsuarioException;
+import util.AdicaoEntregadorException;
+import util.LoginEntregadorException;
 import util.ErroInternoException;
 
 public interface IGerente {
-    public void adicionar(String usuario) throws AdicaoUsuarioException, ErroInternoException;
-    public void remover(String login) throws LoginUsuarioException, ErroInternoException;
-    public void listar(String login) throws LoginUsuarioException;
+    public void adicionar(String entregador) throws AdicaoEntregadorException, ErroInternoException;
+    public void remover(String login) throws LoginEntregadorException, ErroInternoException;
+    public void listar(String login) throws LoginEntregadorException;
     public void listarTodosPorOrdemAlfabetica();
     public void listarTodosPorOrdemDataDeNascimento();
 }

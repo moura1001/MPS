@@ -1,8 +1,8 @@
 package business.control;
 
-import util.AdicaoUsuarioException;
+import util.AdicaoEntregadorException;
 import util.ErroInternoException;
-import util.LoginUsuarioException;
+import util.LoginEntregadorException;
 import util.ProdutoException;
 import business.report.GeradorRelatorio;
 import business.authentication.AdaptadorAutenticador;
@@ -12,16 +12,16 @@ import java.util.Scanner;
 public class Sistema {
 
     private static Sistema sistema;
-    GerenteUsuario gerenteUsuario;
+    GerenteEntregador gerenteEntregador;
     GerentePedido gerentePedido;
     GerenteProduto gerenteProduto;
-    private int numeroAcessosUsuarios;
+    private int numeroAcessosEntregadores;
 
     private Sistema() {
-        this.gerenteUsuario = GerenteUsuario.getGerente();
+        this.gerenteEntregador = GerenteEntregador.getGerente();
         this.gerentePedido = GerentePedido.getGerente();
         this.gerenteProduto = GerenteProduto.getGerente();
-        this.numeroAcessosUsuarios = 0;
+        this.numeroAcessosEntregadores = 0;
     }
 
     public static Sistema obterInstancia() {
@@ -31,12 +31,12 @@ public class Sistema {
         return sistema;
     }
 
-    public void adicionarUsuario(String args){
+    public void adicionarEntregador(String args){
         try{
-            gerenteUsuario.adicionar(args);
+            gerenteEntregador.adicionar(args);
             //gerente.listarTodos();
 
-        } catch(AdicaoUsuarioException e){
+        } catch(AdicaoEntregadorException e){
             System.out.println(e.getMessage());
 
         } catch(ErroInternoException e){
@@ -44,12 +44,12 @@ public class Sistema {
         }
     }
 
-    public void excluirUsuario(String args){
+    public void excluirEntregador(String args){
         try{
-            gerenteUsuario.remover(args);
+            gerenteEntregador.remover(args);
             //gerente.listarTodos();
 
-        } catch(LoginUsuarioException e){
+        } catch(LoginEntregadorException e){
             System.out.println(e.getMessage());
 
         } catch(ErroInternoException e){
@@ -57,12 +57,12 @@ public class Sistema {
         }
     }
 
-    public void listarUsuarios1(){
-        gerenteUsuario.listarTodosPorOrdemAlfabetica();
+    public void listarEntregadores1(){
+        gerenteEntregador.listarTodosPorOrdemAlfabetica();
     }
 
-    public void listarUsuarios2(){
-        gerenteUsuario.listarTodosPorOrdemDataDeNascimento();
+    public void listarEntregadores2(){
+        gerenteEntregador.listarTodosPorOrdemDataDeNascimento();
     }
 
     public void adicionarNoPedido(String login) {
@@ -128,11 +128,11 @@ public class Sistema {
         geradorRelatorio.gerarRelatorio();
     }
 
-    public void login(String usuario, AdaptadorAutenticador autenticador){
-        if(usuario == null)
+    public void login(String entregador, AdaptadorAutenticador autenticador){
+        if(entregador == null)
             System.out.println("\nFalha na autenticação. Digite Login e senha\n");
 
-        String[] info = usuario.split("[\\t ]");
+        String[] info = entregador.split("[\\t ]");
 
         if(info.length != 2){
             System.out.println("\nFalha na autenticação. Login ou senha não informados\n");
@@ -144,19 +144,19 @@ public class Sistema {
         
         if(autenticador.autenticar(email, senha)){
             System.out.println("\nAutenticação realizada. Login bem-sucedido.\n");
-            this.numeroAcessosUsuarios++;
+            this.numeroAcessosEntregadores++;
         }
         else
             System.out.println("\nFalha na autenticação. Login ou senha incorretos.\n");
     }
 
     public int numeroAcessos() {
-        return this.numeroAcessosUsuarios;
+        return this.numeroAcessosEntregadores;
     }
 
     public void encerrarPrograma(){
         try{
-            gerenteUsuario.encerrar();
+            gerenteEntregador.encerrar();
             gerenteProduto.encerrar();
         } catch(ErroInternoException e){
             System.out.println(e.getMessage());

@@ -1,12 +1,12 @@
 package business.control;
 
 import java.util.Comparator;
-import business.model.Usuario;
+import business.model.Entregador;
 import business.model.Data;
 
-public class ComparadorData implements Comparator<Usuario>{
+public class ComparadorData implements Comparator<Entregador>{
 
-    public int compare(Usuario u1, Usuario u2){
+    public int compare(Entregador u1, Entregador u2){
         Data data1 = u1.getData();
         Data data2 = u2.getData();
 

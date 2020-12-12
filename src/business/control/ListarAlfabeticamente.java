@@ -1,14 +1,14 @@
 package business.control;
 import java.util.TreeSet;
-import business.model.Usuario;
+import business.model.Entregador;
 
-public class ListarAlfabeticamente extends ListarUsuarioStrategy{
+public class ListarAlfabeticamente extends ListarEntregadorStrategy{
 
-    public void listar(TreeSet<Usuario> usuariosSet){
+    public void listar(TreeSet<Entregador> entregadoresSet){
 
         System.out.println("\nUsuários:");
-        for(Usuario usuario : usuariosSet)
-            System.out.println(usuario);
+        for(Entregador entregador : entregadoresSet)
+            System.out.println(entregador);
         System.out.println();
     }
 }
