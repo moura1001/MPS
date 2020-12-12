@@ -3,6 +3,7 @@ package business.control;
 import java.util.TreeSet;
 import business.model.Usuario;
 import business.model.Data;
+import business.control.ListarUsuarioStrategy;
 import util.LoginUsuarioException;
 import util.SenhaUsuarioException;
 import util.DataUsuarioException;
@@ -15,6 +16,7 @@ import infra.FabricaGerentePersistencia;
 public class GerenteUsuario implements IGerente{
 
     private static GerenteUsuario gerente;
+    private static ListarUsuarioStrategy listarUsuarioStrategy;
     private TreeSet<Usuario> usuarios;
     private GerentePersistencia repositorioUsuario;
 
@@ -107,22 +109,15 @@ public class GerenteUsuario implements IGerente{
     }
 
     public void listarTodosPorOrdemAlfabetica(){
-        System.out.println("\nUsuários:");
-        for(Usuario usuario : this.usuarios)
-            System.out.println(usuario);
-        System.out.println();    
+
+        listarUsuarioStrategy = new ListarAlfabeticamente();
+        listarUsuarioStrategy.listar(this.usuarios);
     }
 
     public void listarTodosPorOrdemDataDeNascimento(){
-        TreeSet<Usuario> usuarios = new TreeSet<Usuario>(new ComparadorData());
-        
-        for(Usuario usuario : this.usuarios)
-            usuarios.add(usuario);
-        
-        System.out.println("\nUsuários:");
-        for(Usuario usuario : usuarios)
-            System.out.println(usuario + "\t" + usuario.getData());
-        System.out.println();
+
+        listarUsuarioStrategy = new ListarPorNascimento();
+        listarUsuarioStrategy.listar(this.usuarios);
     }
 
     public void encerrar() throws ErroInternoException{        
