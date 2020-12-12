@@ -2,7 +2,7 @@ package business.control;
 
 import java.util.TreeSet;
 
-import business.model.Pedido;
+import business.model.ListaDeCompra;
 import business.model.Usuario;
 import business.model.Produto;
 import util.LoginUsuarioException;
@@ -32,12 +32,12 @@ public class GerentePedido {
             return;
         }
         
-        if(usuario.getPedido() == null)
-        	usuario.setPedido(new Pedido());
+        if(usuario.getListaDeCompra() == null)
+        	usuario.setListaDeCompra(new ListaDeCompra());
         
-        Pedido pedido = usuario.getPedido();
-        pedido.getProdutos().add(produto);
-        pedido.setValorTotal(pedido.getValor() + produto.getValor());
+        ListaDeCompra listaDeCompra = usuario.getListaDeCompra();
+        listaDeCompra.getProdutos().add(produto);
+        listaDeCompra.setValorTotal(listaDeCompra.getValor() + produto.getValor());
         System.out.println("PEDIDO CADASTRADO");
         
         try {
@@ -50,10 +50,10 @@ public class GerentePedido {
     public void listarTodos() {
         for (Usuario usuario : usuarios) {
             System.out.print("# ");
-            Pedido pedido = usuario.getPedido();
-            if(pedido == null)
+            ListaDeCompra listaDeCompra = usuario.getListaDeCompra();
+            if(listaDeCompra == null)
                 break;
-            for(Produto produto : pedido.getProdutos()){
+            for(Produto produto : listaDeCompra.getProdutos()){
                 System.out.print("produto: " + produto + " ");
                 System.out.print("valor: " + produto.getValor() + " ");
             }
@@ -73,7 +73,7 @@ public class GerentePedido {
             return;
         }
 
-        usuario.setPedido(null);
+        usuario.setListaDeCompra(null);
 
         try {
             this.repositorio.salvar("usuarios", this.usuarios);
@@ -94,11 +94,11 @@ public class GerentePedido {
             return;
         }
 
-        Pedido pedido = usuario.getPedido();
-        if (pedido.getProdutos().size() > 0){
-            for (Produto i: pedido.getProdutos()) {
+        ListaDeCompra listaDeCompra = usuario.getListaDeCompra();
+        if (listaDeCompra.getProdutos().size() > 0){
+            for (Produto i: listaDeCompra.getProdutos()) {
                 if (i.getNome().equals(produto)) {
-                    pedido.getProdutos().remove(i);
+                    listaDeCompra.getProdutos().remove(i);
                     break;
                 }
             }

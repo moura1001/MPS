@@ -1,6 +1,6 @@
 package business.model;
 
-import business.model.Pedido;
+import business.model.ListaDeCompra;
 import java.lang.Comparable;
 import java.io.Serializable;
 
@@ -10,7 +10,7 @@ public class Usuario implements Comparable<Usuario>, Serializable{
     private String senha;
     private Data dataNascimento;
     
-    private Pedido pedido;
+    private ListaDeCompra listaDeCompra;
 
     public Usuario(String login, String senha){
         this.login = login;
@@ -18,11 +18,11 @@ public class Usuario implements Comparable<Usuario>, Serializable{
         dataNascimento = new Data();
     }
 
-    public Usuario(String login, String senha, Data data, Pedido pedido){
+    public Usuario(String login, String senha, Data data, ListaDeCompra listaDeCompra){
         this.login = login;
         this.senha = senha;
         this.dataNascimento = data;
-        this.pedido = pedido;
+        this.listaDeCompra = listaDeCompra;
     }
 
     public int compareTo(Usuario usuario){
@@ -45,15 +45,15 @@ public class Usuario implements Comparable<Usuario>, Serializable{
         return this.dataNascimento;
     }
 
-    public Pedido getPedido(){
-        return this.pedido;
+    public ListaDeCompra getListaDeCompra(){
+        return this.listaDeCompra;
     }
 
     public void setData(Data data){
         this.dataNascimento = data;
     }
 
-    public void setPedido(Pedido pedido) {
-        this.pedido = pedido;
+    public void setListaDeCompra(ListaDeCompra listaDeCompra) {
+        this.listaDeCompra = listaDeCompra;
     }
 }
