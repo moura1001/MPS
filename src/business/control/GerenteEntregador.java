@@ -15,6 +15,7 @@ import infra.FabricaGerentePersistencia;
 public class GerenteEntregador implements IGerente{
 
     private static GerenteEntregador gerente;
+    private static ListarEntregadorStrategy listarEntregadorStrategy;
     private TreeSet<Entregador> entregadores;
     private GerentePersistencia repositorioEntregador;
 
@@ -107,22 +108,15 @@ public class GerenteEntregador implements IGerente{
     }
 
     public void listarTodosPorOrdemAlfabetica(){
-        System.out.println("\nentregadores:");
-        for(Entregador entregador : this.entregadores)
-            System.out.println(entregador);
-        System.out.println();    
+
+        listarEntregadorStrategy = new ListarAlfabeticamente();
+        listarEntregadorStrategy.listar(this.entregadores);
     }
 
     public void listarTodosPorOrdemDataDeNascimento(){
-        TreeSet<Entregador> entregadores = new TreeSet<Entregador>(new ComparadorData());
-        
-        for(Entregador entregador : this.entregadores)
-            entregadores.add(entregador);
-        
-        System.out.println("\nentregadores:");
-        for(Entregador entregador : entregadores)
-            System.out.println(entregador + "\t" + entregador.getData());
-        System.out.println();
+
+        listarEntregadorStrategy = new ListarPorNascimento();
+        listarEntregadorStrategy.listar(this.entregadores);
     }
 
     public void encerrar() throws ErroInternoException{        
