@@ -2,7 +2,7 @@ package business.report;
 
 import business.control.Sistema;
 import business.control.GerenteEntregador;
-import business.control.GerentePedido;
+import business.control.GerenteListaDeCompra;
 
 public abstract class GeradorRelatorio{
 
@@ -23,7 +23,7 @@ public abstract class GeradorRelatorio{
     public void adquirirDados(){
         // Adquirir os dados para fazer o relatorio   
         GerenteEntregador gerenteEntregador = GerenteEntregador.getGerente();
-		GerentePedido gerentePedido = GerentePedido.getGerente();
+		GerenteListaDeCompra gerenteListaDeCompra = GerenteListaDeCompra.getGerente();
 		Sistema sistema = Sistema.obterInstancia();    
         
         this.entregadoresCadastrados = gerenteEntregador.quantidadeEntregadoresCadastrados();

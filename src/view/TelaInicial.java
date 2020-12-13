@@ -20,13 +20,13 @@ public class TelaInicial{
     public String menu(){
         String[] acoes = {
                 "",
-                "Adicionar usuário",
-                "Excluir usuário",
-                "Listar todos os usuários por ordem alfabética",
-                "Listar todos os usuários por ordem data de nascimento",
-                "Adicionar pedido",
-                "Remover pedido",
-                "Listar todos os pedidos",
+                "Adicionar entregador",
+                "Excluir entregador",
+                "Listar todos os entregadores por ordem alfabética",
+                "Listar todos os entregadores por ordem data de nascimento",
+                "Adicionar lista de compra",
+                "Remover lista de compra",
+                "Listar todas as listas de compras",
                 "Adicionar produto",
                 "Remover produto",
                 "Listar todos os produtos",
@@ -82,18 +82,18 @@ public class TelaInicial{
             case "5":
                 System.out.println("\nDigite login:");
                 input = scanner.nextLine();
-                sistema.adicionarNoPedido(input);
+                sistema.adicionarNaListaDeCompra(input);
                 break;
 
             case "6":
                 System.out.println("\nDigite login:");
                 input = scanner.nextLine();
-                sistema.removerPedido(input);
+                sistema.removerListaDeCompra(input);
                 break;
 
             case "7":
-                System.out.println("\nTodos pedidos:");
-                sistema.listarPedidos();
+                System.out.println("\nTodas as listas de compras:");
+                sistema.listarListasDeCompras();
                 break;
 
             case "8":

@@ -2,7 +2,7 @@ package business.control;
 import java.util.TreeSet;
 import business.model.Entregador;
 
-public class ListarAlfabeticamente extends ListarEntregadorStrategy{
+public class ListarAlfabeticamente implements ListarEntregadorStrategy{
 
     public void listar(TreeSet<Entregador> entregadoresSet){
 

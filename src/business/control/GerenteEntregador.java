@@ -12,7 +12,7 @@ import util.ErroInternoException;
 import infra.GerentePersistencia;
 import infra.FabricaGerentePersistencia;
 
-public class GerenteEntregador implements IGerente{
+public class GerenteEntregador{
 
     private static GerenteEntregador gerente;
     private static ListarEntregadorStrategy listarEntregadorStrategy;

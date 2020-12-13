@@ -13,13 +13,13 @@ public class Sistema {
 
     private static Sistema sistema;
     GerenteEntregador gerenteEntregador;
-    GerentePedido gerentePedido;
+    GerenteListaDeCompra gerenteListaDeCompra;
     GerenteProduto gerenteProduto;
     private int numeroAcessosEntregadores;
 
     private Sistema() {
         this.gerenteEntregador = GerenteEntregador.getGerente();
-        this.gerentePedido = GerentePedido.getGerente();
+        this.gerenteListaDeCompra = GerenteListaDeCompra.getGerente();
         this.gerenteProduto = GerenteProduto.getGerente();
         this.numeroAcessosEntregadores = 0;
     }
@@ -65,7 +65,7 @@ public class Sistema {
         gerenteEntregador.listarTodosPorOrdemDataDeNascimento();
     }
 
-    public void adicionarNoPedido(String login) {
+    public void adicionarNaListaDeCompra(String login) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Escolha 1 produto: ");
         String input = scanner.nextLine();
@@ -77,22 +77,22 @@ public class Sistema {
             System.out.println(e.getMessage());
             return;
         }
-        gerentePedido.adicionar(produto, login);
+        gerenteListaDeCompra.adicionar(produto, login);
     }
 
-    public void removerDoPedido(String login) {
+    public void removerDaListaDeCompra(String login) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Escolha o produto a ser removido: ");
         String input = scanner.nextLine();
-        gerentePedido.removerProdutoDoPedido(login, input);
+        gerenteListaDeCompra.removerProdutoDaListaDeCompra(login, input);
     }
 
-    public void removerPedido(String login) {
-        gerentePedido.removerPedido(login);
+    public void removerListaDeCompra(String login) {
+        gerenteListaDeCompra.removerListaDeCompra(login);
     }
 
-    public void listarPedidos() {
-        gerentePedido.listarTodos();
+    public void listarListasDeCompras() {
+        gerenteListaDeCompra.listarTodos();
     }
 
     public void adicionarProduto(String produto){

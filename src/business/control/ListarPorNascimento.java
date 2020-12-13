@@ -2,7 +2,7 @@ package business.control;
 import java.util.TreeSet;
 import business.model.Entregador;
 
-public class ListarPorNascimento extends ListarEntregadorStrategy{
+public class ListarPorNascimento implements ListarEntregadorStrategy{
 
     public void listar(TreeSet<Entregador> entregadoresSet){
         TreeSet<Entregador> entregadores = new TreeSet<Entregador>(new ComparadorData());

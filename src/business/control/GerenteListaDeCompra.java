@@ -10,13 +10,13 @@ import util.PersistenciaException;
 import infra.GerentePersistencia;
 import infra.FabricaGerentePersistencia;
 
-public class GerentePedido {
+public class GerenteListaDeCompra {
     
-    private static GerentePedido gerente;
+    private static GerenteListaDeCompra gerente;
     private TreeSet<Entregador> entregadores;
     private GerentePersistencia repositorio;
 
-    private GerentePedido(TreeSet<Entregador> entregadores) {
+    private GerenteListaDeCompra(TreeSet<Entregador> entregadores) {
         this.repositorio = FabricaGerentePersistencia.obterGerentePersistencia("arquivo");
         this.entregadores = entregadores;        
     }
@@ -62,7 +62,7 @@ public class GerentePedido {
         System.out.println("\n");
     }
 
-    public void removerPedido(String login) {
+    public void removerListaDeCompra(String login) {
 
         Entregador entregador = null;
         try{
@@ -83,7 +83,7 @@ public class GerentePedido {
 
     }
 
-    public void removerProdutoDoPedido(String login, String produto) {
+    public void removerProdutoDaListaDeCompra(String login, String produto) {
 
         Entregador entregador = null;
         try{
@@ -112,9 +112,9 @@ public class GerentePedido {
 
     }
 
-    public static GerentePedido getGerente(){
+    public static GerenteListaDeCompra getGerente(){
         if(gerente == null)
-            gerente = new GerentePedido(GerenteEntregador.getGerente().getEntregadores());
+            gerente = new GerenteListaDeCompra(GerenteEntregador.getGerente().getEntregadores());
 
         return gerente;    
     }
